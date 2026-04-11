@@ -10,5 +10,6 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^react-native-mmkv$': '<rootDir>/__mocks__/react-native-mmkv.ts',
     '^react-native-get-random-values$': '<rootDir>/__mocks__/empty.ts',
+    '^uuid$': '<rootDir>/__mocks__/uuid.ts',
   },
 };
