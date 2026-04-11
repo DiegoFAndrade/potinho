@@ -1,10 +1,14 @@
+/** @type {import('jest').Config} */
 module.exports = {
-  preset: 'jest-expo',
-  setupFiles: ['<rootDir>/jest-setup.ts'],
-  transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native(-community)?|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|nativewind|react-native-css-interop))',
-  ],
+  testEnvironment: 'node',
+  roots: ['<rootDir>/src', '<rootDir>/__tests__'],
+  testMatch: ['**/__tests__/**/*.test.ts', '**/?(*.)+(spec|test).ts'],
+  transform: {
+    '^.+\\.tsx?$': ['ts-jest', { tsconfig: { jsx: 'react', esModuleInterop: true, module: 'commonjs', target: 'es2020', moduleResolution: 'node' } }],
+  },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^react-native-mmkv$': '<rootDir>/__mocks__/react-native-mmkv.ts',
+    '^react-native-get-random-values$': '<rootDir>/__mocks__/empty.ts',
   },
 };
