@@ -20,13 +20,23 @@
         "backgroundColor": "#FFF8EF"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "plugins": [
       "expo-router",
       "expo-audio",
-      "expo-haptics",
       "@sentry/react-native/expo"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "c84c3b61-1fca-44d7-a5b3-e3058ef946a6"
+      }
+    },
+    "owner": "18diegodev98"
   }
 }
