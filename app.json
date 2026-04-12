@@ -29,7 +29,9 @@
     "plugins": [
       "expo-router",
       "expo-audio",
-      "@sentry/react-native/expo"
+      "@sentry/react-native/expo",
+      "expo-asset",
+      "@sentry/react-native"
     ],
     "extra": {
       "router": {},
