@@ -1,15 +1,50 @@
 import { View, Text, Pressable } from 'react-native';
 import { Redirect, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
 import { Jar } from '@/components/Jar';
 import { TaskCard } from '@/components/TaskCard';
 import { PrimaryButton } from '@/components/PrimaryButton';
-import { Streak } from '@/components/Streak';
 import { AdBanner } from '@/components/AdBanner';
 import { useDrawTask } from '@/hooks/useDrawTask';
 import { useJarStore } from '@/stores/jarStore';
 import { useTaskStore } from '@/stores/taskStore';
 import { useAppStore } from '@/stores/appStore';
+
+/** Small sticker-style icon button */
+function IconButton({ icon, onPress, label }: { icon: keyof typeof Feather.glyphMap; onPress: () => void; label: string }) {
+  return (
+    <Pressable onPress={onPress} accessibilityLabel={label} hitSlop={10}>
+      <View style={{ position: 'relative', paddingRight: 3, paddingBottom: 3 }}>
+        <View
+          style={{
+            position: 'absolute',
+            top: 3,
+            left: 3,
+            right: 0,
+            bottom: 0,
+            backgroundColor: '#231208',
+            borderRadius: 14,
+          }}
+        />
+        <View
+          style={{
+            width: 42,
+            height: 42,
+            borderRadius: 14,
+            backgroundColor: '#FFFBEF',
+            borderWidth: 2.5,
+            borderColor: '#231208',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Feather name={icon} size={20} color="#231208" />
+        </View>
+      </View>
+    </Pressable>
+  );
+}
 
 export default function Home() {
   const router = useRouter();
@@ -44,13 +79,9 @@ export default function Home() {
           >
             ✦ {jar.name}
           </Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 18 }}>
-            <Pressable onPress={() => router.push('/tasks')} accessibilityLabel="Lista de tarefas" hitSlop={10}>
-              <Text style={{ fontSize: 20 }}>📋</Text>
-            </Pressable>
-            <Pressable onPress={() => router.push('/settings')} accessibilityLabel="Configurações" hitSlop={10}>
-              <Text style={{ fontSize: 20 }}>⚙️</Text>
-            </Pressable>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <IconButton icon="list" onPress={() => router.push('/tasks')} label="Lista de tarefas" />
+            <IconButton icon="settings" onPress={() => router.push('/settings')} label="Configurações" />
           </View>
         </View>
 
