@@ -3,13 +3,19 @@ import { useEffect } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
+import * as Sentry from '@sentry/react-native';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { adsService } from '@/services/adsService';
 import { purchaseService } from '@/services/purchaseService';
 import { useJarStore } from '@/stores/jarStore';
 import { useAppStore } from '@/stores/appStore';
 
-export default function RootLayout() {
+Sentry.init({
+  dsn: process.env.EXPO_PUBLIC_SENTRY_DSN ?? '',
+  enableAutoSessionTracking: true,
+});
+
+function RootLayout() {
   const router = useRouter();
   const onboardingDone = useAppStore((s) => s.onboardingDone);
 
@@ -50,3 +56,5 @@ export default function RootLayout() {
     </ErrorBoundary>
   );
 }
+
+export default Sentry.wrap(RootLayout);

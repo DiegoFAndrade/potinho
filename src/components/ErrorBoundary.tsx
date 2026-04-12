@@ -16,8 +16,10 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error) {
-    // TODO(Task 33): wire Sentry here
-    console.error('[ErrorBoundary]', error);
+    // Report to Sentry without blocking render
+    import('@sentry/react-native')
+      .then(({ captureException }) => captureException(error))
+      .catch(() => {});
   }
 
   render() {
