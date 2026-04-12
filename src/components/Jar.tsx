@@ -1,5 +1,5 @@
 import { useRef, useImperativeHandle, forwardRef, useCallback } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -17,109 +17,16 @@ interface Props {
   taskCount: number;
 }
 
-/** Hand-crafted ceramic pot built with Views. */
-function PotIllustration() {
-  return (
-    <View style={{ alignItems: 'center', width: 180, height: 200 }}>
-      {/* Lid / rim */}
-      <View
-        style={{
-          width: 140,
-          height: 20,
-          backgroundColor: '#D4877A',
-          borderRadius: 10,
-          borderWidth: 2.5,
-          borderColor: '#231208',
-          zIndex: 2,
-        }}
-      />
-
-      {/* Neck (connects rim to body) */}
-      <View
-        style={{
-          width: 100,
-          height: 14,
-          backgroundColor: '#E8A196',
-          borderLeftWidth: 2.5,
-          borderRightWidth: 2.5,
-          borderColor: '#231208',
-          marginTop: -2,
-          zIndex: 1,
-        }}
-      />
-
-      {/* Body — big round belly */}
-      <View
-        style={{
-          width: 160,
-          height: 140,
-          backgroundColor: '#F0B4A8',
-          borderRadius: 80,
-          borderBottomLeftRadius: 60,
-          borderBottomRightRadius: 60,
-          borderTopLeftRadius: 70,
-          borderTopRightRadius: 70,
-          borderWidth: 2.5,
-          borderColor: '#231208',
-          marginTop: -6,
-          overflow: 'hidden',
-        }}
-      >
-        {/* Highlight / shine on body */}
-        <View
-          style={{
-            position: 'absolute',
-            top: 20,
-            left: 20,
-            width: 40,
-            height: 60,
-            backgroundColor: '#F8CFC7',
-            borderRadius: 20,
-            opacity: 0.7,
-            transform: [{ rotate: '-12deg' }],
-          }}
-        />
-
-        {/* Belly stripe accent */}
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 40,
-            left: 20,
-            right: 20,
-            height: 3,
-            backgroundColor: '#D4877A',
-            borderRadius: 2,
-          }}
-        />
-      </View>
-
-      {/* Bottom / base */}
-      <View
-        style={{
-          width: 100,
-          height: 14,
-          backgroundColor: '#D4877A',
-          borderBottomLeftRadius: 8,
-          borderBottomRightRadius: 8,
-          borderWidth: 2.5,
-          borderTopWidth: 0,
-          borderColor: '#231208',
-          marginTop: -8,
-        }}
-      />
-    </View>
-  );
-}
+const POT_IMAGE = require('../../assets/logo-transparent.png');
 
 /** Small paper slips peeking out of the pot. */
 function PaperSlips({ count }: { count: number }) {
   if (count === 0) return null;
 
   const slips = [
-    { rotate: '-18deg', translateX: -22, color: '#FFFBEF', height: 28 },
-    { rotate: '10deg', translateX: 8, color: '#FFD5C8', height: 32 },
-    { rotate: '-5deg', translateX: 20, color: '#FFFBEF', height: 24 },
+    { rotate: '-18deg', translateX: -24, color: '#FFFBEF', height: 30 },
+    { rotate: '10deg', translateX: 6, color: '#FFD5C8', height: 34 },
+    { rotate: '-5deg', translateX: 24, color: '#FFFBEF', height: 26 },
   ];
 
   const visibleCount = Math.min(count, slips.length);
@@ -128,7 +35,7 @@ function PaperSlips({ count }: { count: number }) {
     <View
       style={{
         position: 'absolute',
-        top: -10,
+        top: 8,
         left: 0,
         right: 0,
         alignItems: 'center',
@@ -142,7 +49,7 @@ function PaperSlips({ count }: { count: number }) {
           key={i}
           style={{
             position: 'absolute',
-            width: 28,
+            width: 30,
             height: s.height,
             backgroundColor: s.color,
             borderRadius: 4,
@@ -252,7 +159,11 @@ export const Jar = forwardRef<JarHandle, Props>(({ taskCount }, ref) => {
       <Animated.View style={animatedStyle}>
         <View style={{ position: 'relative' }}>
           <PaperSlips count={taskCount} />
-          <PotIllustration />
+          <Image
+            source={POT_IMAGE}
+            style={{ width: 200, height: 200 }}
+            resizeMode="contain"
+          />
         </View>
       </Animated.View>
     </View>
