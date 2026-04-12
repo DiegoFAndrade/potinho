@@ -3,6 +3,7 @@ import { View, Text, Pressable, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { PrimaryButton } from '@/components/PrimaryButton';
+import { IconButton } from '@/components/IconButton';
 import { purchaseService } from '@/services/purchaseService';
 
 const BENEFITS = [
@@ -44,9 +45,7 @@ export default function Paywall() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
       <View style={{ paddingHorizontal: 24, paddingTop: 16, alignItems: 'flex-end' }}>
-        <Pressable onPress={() => router.back()} hitSlop={12}>
-          <Text style={{ fontSize: 28, color: '#231208' }}>✕</Text>
-        </Pressable>
+        <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
       </View>
 
       <View style={{ flex: 1, paddingHorizontal: 32, justifyContent: 'center' }}>

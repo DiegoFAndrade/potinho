@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { View, Text, Switch, Pressable, Linking } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { IconButton } from '@/components/IconButton';
 import { useAppStore } from '@/stores/appStore';
 
 const PRIVACY_URL = 'https://diegofernandes.github.io/potinho/privacy';
@@ -67,12 +68,10 @@ export default function Settings() {
             className="font-display"
             style={{ color: '#231208', fontSize: 40, lineHeight: 44, letterSpacing: -0.8, marginTop: 2 }}
           >
-            Config
+            Ajustes
           </Text>
         </View>
-        <Pressable onPress={() => router.back()} hitSlop={12}>
-          <Text style={{ fontSize: 28, color: '#231208' }}>✕</Text>
-        </Pressable>
+        <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
       </View>
 
       <View style={{ paddingHorizontal: 24, paddingTop: 24 }}>

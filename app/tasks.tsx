@@ -1,6 +1,7 @@
 import { View, Text, FlatList, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { IconButton } from '@/components/IconButton';
 import { useJarStore } from '@/stores/jarStore';
 import { useTaskStore } from '@/stores/taskStore';
 import { useAppStore } from '@/stores/appStore';
@@ -74,9 +75,7 @@ export default function TasksScreen() {
             Tarefas
           </Text>
         </View>
-        <Pressable onPress={() => router.back()} hitSlop={12}>
-          <Text style={{ fontSize: 28, color: '#231208' }}>✕</Text>
-        </Pressable>
+        <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
       </View>
 
       <View style={{ flex: 1, paddingHorizontal: 24, paddingTop: 16 }}>
