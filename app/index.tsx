@@ -135,19 +135,21 @@ export default function Home() {
         )}
       </View>
 
-      {/* Bottom actions */}
-      <View style={{ paddingHorizontal: 24, paddingBottom: 12, gap: 12 }}>
-        <PrimaryButton onPress={() => router.push('/add-task')} variant="secondary">
-          + Criar tarefa
-        </PrimaryButton>
-        <PrimaryButton
-          onPress={draw}
-          disabled={activeCount === 0 || isDrawing || !!drawnTask}
-          testID="draw-button"
-        >
-          {isDrawing ? '...' : 'SORTEAR ✦'}
-        </PrimaryButton>
-      </View>
+      {/* Bottom actions — hidden when a task card is showing */}
+      {!drawnTask && (
+        <View style={{ paddingHorizontal: 24, paddingBottom: 12, gap: 12 }}>
+          <PrimaryButton onPress={() => router.push('/add-task')} variant="secondary">
+            + Criar tarefa
+          </PrimaryButton>
+          <PrimaryButton
+            onPress={draw}
+            disabled={activeCount === 0 || isDrawing}
+            testID="draw-button"
+          >
+            {isDrawing ? '...' : 'SORTEAR ✦'}
+          </PrimaryButton>
+        </View>
+      )}
 
       <AdBanner />
     </SafeAreaView>
