@@ -1,6 +1,13 @@
-import LottieView from 'lottie-react-native';
-import { useRef, useImperativeHandle, forwardRef } from 'react';
-import { View, Text } from 'react-native';
+import { useRef, useImperativeHandle, forwardRef, useCallback } from 'react';
+import { View, Text, Image } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSequence,
+  withTiming,
+  withDelay,
+  Easing,
+} from 'react-native-reanimated';
 
 export interface JarHandle {
   shake: () => Promise<void>;
@@ -10,21 +17,59 @@ interface Props {
   taskCount: number;
 }
 
-export const Jar = forwardRef<JarHandle, Props>(({ taskCount }, ref) => {
-  const lottieRef = useRef<LottieView>(null);
+const JAR_IMAGE = require('../../assets/logo.png');
 
-  useImperativeHandle(ref, () => ({
-    shake: () =>
-      new Promise((resolve) => {
-        lottieRef.current?.reset();
-        lottieRef.current?.play();
-        setTimeout(resolve, 2500);
-      }),
+export const Jar = forwardRef<JarHandle, Props>(({ taskCount }, ref) => {
+  const rotation = useSharedValue(0);
+  const scale = useSharedValue(1);
+  const resolveRef = useRef<(() => void) | null>(null);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      { rotate: `${rotation.value}deg` },
+      { scale: scale.value },
+    ],
   }));
+
+  const shake = useCallback(() => {
+    return new Promise<void>((resolve) => {
+      resolveRef.current = resolve;
+
+      const t = 80; // duration per swing
+      const ease = Easing.inOut(Easing.ease);
+
+      // Scale up slightly then shake
+      scale.value = withSequence(
+        withTiming(1.05, { duration: 150, easing: ease }),
+        withDelay(t * 10, withTiming(1, { duration: 200, easing: ease })),
+      );
+
+      rotation.value = withSequence(
+        withTiming(-8, { duration: t, easing: ease }),
+        withTiming(8, { duration: t, easing: ease }),
+        withTiming(-8, { duration: t, easing: ease }),
+        withTiming(8, { duration: t, easing: ease }),
+        withTiming(-6, { duration: t, easing: ease }),
+        withTiming(6, { duration: t, easing: ease }),
+        withTiming(-4, { duration: t, easing: ease }),
+        withTiming(4, { duration: t, easing: ease }),
+        withTiming(-2, { duration: t, easing: ease }),
+        withTiming(0, { duration: t, easing: ease }),
+      );
+
+      // Resolve after full animation (~1s)
+      setTimeout(() => {
+        resolveRef.current?.();
+        resolveRef.current = null;
+      }, t * 10 + 200);
+    });
+  }, [rotation, scale]);
+
+  useImperativeHandle(ref, () => ({ shake }));
 
   return (
     <View style={{ alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-      {/* decorative asterisks around the jar */}
+      {/* decorative asterisks */}
       <Text
         className="font-display"
         style={{
@@ -55,7 +100,7 @@ export const Jar = forwardRef<JarHandle, Props>(({ taskCount }, ref) => {
         className="font-display"
         style={{
           position: 'absolute',
-          bottom: 40,
+          bottom: 20,
           left: -12,
           color: '#89A47C',
           fontSize: 24,
@@ -65,16 +110,13 @@ export const Jar = forwardRef<JarHandle, Props>(({ taskCount }, ref) => {
         ✦
       </Text>
 
-      <LottieView
-        ref={lottieRef}
-        source={require('../../assets/lottie/jar-shake.json')}
-        style={{ width: 280, height: 280 }}
-        loop={false}
-        autoPlay={false}
-      />
-
-      {/* Task count is shown by Home screen below the jar so we skip it here */}
-      {taskCount === 0 && null}
+      <Animated.View style={animatedStyle}>
+        <Image
+          source={JAR_IMAGE}
+          style={{ width: 220, height: 220 }}
+          resizeMode="contain"
+        />
+      </Animated.View>
     </View>
   );
 });
