@@ -1,14 +1,22 @@
 import '../global.css';
 import { useEffect } from 'react';
-import { Stack, useRouter } from 'expo-router';
+import { View } from 'react-native';
+import { Stack } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import * as Sentry from '@sentry/react-native';
+import { useFonts, Caprasimo_400Regular } from '@expo-google-fonts/caprasimo';
+import {
+  Fraunces_400Regular,
+  Fraunces_500Medium,
+  Fraunces_600SemiBold,
+  Fraunces_700Bold,
+  Fraunces_900Black,
+} from '@expo-google-fonts/fraunces';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { adsService } from '@/services/adsService';
 import { purchaseService } from '@/services/purchaseService';
 import { useJarStore } from '@/stores/jarStore';
-import { useAppStore } from '@/stores/appStore';
 
 Sentry.init({
   dsn: process.env.EXPO_PUBLIC_SENTRY_DSN ?? '',
@@ -16,8 +24,14 @@ Sentry.init({
 });
 
 function RootLayout() {
-  const router = useRouter();
-  const onboardingDone = useAppStore((s) => s.onboardingDone);
+  const [fontsLoaded] = useFonts({
+    Caprasimo_400Regular,
+    Fraunces_400Regular,
+    Fraunces_500Medium,
+    Fraunces_600SemiBold,
+    Fraunces_700Bold,
+    Fraunces_900Black,
+  });
 
   useEffect(() => {
     useJarStore.getState().ensureDefault();
@@ -28,11 +42,9 @@ function RootLayout() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!onboardingDone) {
-      router.replace('/onboarding');
-    }
-  }, [onboardingDone, router]);
+  if (!fontsLoaded) {
+    return <View style={{ flex: 1, backgroundColor: '#F8EFD9' }} />;
+  }
 
   return (
     <ErrorBoundary>
@@ -41,7 +53,7 @@ function RootLayout() {
         <Stack
           screenOptions={{
             headerShown: false,
-            contentStyle: { backgroundColor: '#FFF8EF' },
+            contentStyle: { backgroundColor: '#F8EFD9' },
           }}
         >
           <Stack.Screen name="index" />

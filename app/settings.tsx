@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppStore } from '@/stores/appStore';
 
-const PRIVACY_URL = 'https://diegofernandes.github.io/potinho/privacy'; // replace after hosting
+const PRIVACY_URL = 'https://diegofernandes.github.io/potinho/privacy';
 
 export default function Settings() {
   const router = useRouter();
@@ -25,56 +25,116 @@ export default function Settings() {
   }) => (
     <Pressable
       onPress={onPress}
-      className="flex-row items-center justify-between px-4 py-4 bg-paper rounded-2xl mb-2"
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 18,
+        paddingVertical: 16,
+        backgroundColor: '#FFFBEF',
+        borderRadius: 18,
+        borderWidth: 2.5,
+        borderColor: '#231208',
+        marginBottom: 10,
+      }}
     >
-      <Text className="text-ink text-base">{label}</Text>
+      <Text className="font-bodyBold" style={{ color: '#231208', fontSize: 16 }}>
+        {label}
+      </Text>
       {right}
     </Pressable>
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-cream">
-      <View className="px-6 pt-4 flex-row justify-between items-center">
-        <Text className="text-ink text-xl font-semibold">Configurações</Text>
-        <Pressable onPress={() => router.back()}>
-          <Text className="text-2xl">✕</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
+      <View
+        style={{
+          paddingHorizontal: 24,
+          paddingTop: 16,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+        }}
+      >
+        <View>
+          <Text
+            className="font-bodyBold"
+            style={{ color: '#B8321E', fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
+          >
+            ✦ ajustes
+          </Text>
+          <Text
+            className="font-display"
+            style={{ color: '#231208', fontSize: 40, lineHeight: 44, letterSpacing: -0.8, marginTop: 2 }}
+          >
+            config
+          </Text>
+        </View>
+        <Pressable onPress={() => router.back()} hitSlop={12}>
+          <Text style={{ fontSize: 28, color: '#231208' }}>✕</Text>
         </Pressable>
       </View>
 
-      <View className="px-6 pt-6">
+      <View style={{ paddingHorizontal: 24, paddingTop: 24 }}>
         <Row
-          label="Som do sorteio"
-          right={<Switch value={soundEnabled} onValueChange={toggleSound} />}
+          label="som do sorteio"
+          right={
+            <Switch
+              value={soundEnabled}
+              onValueChange={toggleSound}
+              trackColor={{ true: '#89A47C', false: '#E8D5B7' }}
+              thumbColor="#FFFBEF"
+            />
+          }
         />
         <Row
-          label="Vibração"
-          right={<Switch value={hapticsEnabled} onValueChange={toggleHaptics} />}
+          label="vibração"
+          right={
+            <Switch
+              value={hapticsEnabled}
+              onValueChange={toggleHaptics}
+              trackColor={{ true: '#89A47C', false: '#E8D5B7' }}
+              thumbColor="#FFFBEF"
+            />
+          }
         />
 
         {!isPremium && (
           <Row
-            label="✨ Versão premium"
-            right={<Text className="text-brand font-semibold">Desbloquear</Text>}
+            label="✦ virar premium"
+            right={
+              <Text
+                className="font-bodyBlack"
+                style={{ color: '#E8503D', fontSize: 14, letterSpacing: 1 }}
+              >
+                R$ 6,90 →
+              </Text>
+            }
             onPress={() => router.push('/paywall')}
           />
         )}
 
         {isPremium && (
           <Row
-            label="📊 Estatísticas"
-            right={<Text className="text-muted">›</Text>}
+            label="📊 estatísticas"
+            right={<Text style={{ color: '#4A2E1E', fontSize: 20 }}>›</Text>}
             onPress={() => router.push('/stats')}
           />
         )}
 
         <Row
-          label="Política de privacidade"
-          right={<Text className="text-muted">›</Text>}
+          label="política de privacidade"
+          right={<Text style={{ color: '#4A2E1E', fontSize: 20 }}>›</Text>}
           onPress={() => Linking.openURL(PRIVACY_URL)}
         />
 
-        <View className="mt-8">
-          <Text className="text-muted text-center">Potinho v1.0</Text>
+        <View style={{ marginTop: 32, alignItems: 'center' }}>
+          <Text
+            className="font-bodyBold"
+            style={{ color: '#8A7868', fontSize: 11, letterSpacing: 2, textTransform: 'uppercase' }}
+          >
+            potinho v1.0 ✦ feito com carinho
+          </Text>
         </View>
       </View>
     </SafeAreaView>

@@ -6,11 +6,11 @@ import { PrimaryButton } from '@/components/PrimaryButton';
 import { purchaseService } from '@/services/purchaseService';
 
 const BENEFITS = [
-  { icon: '🚫', label: 'Remover todos os anúncios' },
-  { icon: '🫙', label: 'Potinhos ilimitados por categoria' },
-  { icon: '🎨', label: 'Temas visuais extras' },
-  { icon: '📊', label: 'Estatísticas detalhadas' },
-  { icon: '📅', label: 'Histórico completo sem limite' },
+  { icon: '🚫', label: 'sem anúncios, nunca mais' },
+  { icon: '🫙', label: 'potinhos ilimitados' },
+  { icon: '🎨', label: 'temas visuais extras' },
+  { icon: '📊', label: 'estatísticas detalhadas' },
+  { icon: '📅', label: 'histórico sem limite' },
 ];
 
 export default function Paywall() {
@@ -34,49 +34,101 @@ export default function Paywall() {
     const res = await purchaseService.buyPremium();
     setLoading(false);
     if (res.ok) {
-      Alert.alert('Premium ativado! 🎉', 'Obrigado pelo apoio.');
+      Alert.alert('premium ativado! 🎉', 'obrigado pelo apoio.');
       router.back();
     } else if (res.error) {
-      Alert.alert('Compra não concluída', res.error);
+      Alert.alert('compra não concluída', res.error);
     }
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-cream">
-      <View className="px-6 pt-4 flex-row justify-end">
-        <Pressable onPress={() => router.back()}>
-          <Text className="text-2xl">✕</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
+      <View style={{ paddingHorizontal: 24, paddingTop: 16, alignItems: 'flex-end' }}>
+        <Pressable onPress={() => router.back()} hitSlop={12}>
+          <Text style={{ fontSize: 28, color: '#231208' }}>✕</Text>
         </Pressable>
       </View>
 
-      <View className="flex-1 px-6 justify-center">
-        <Text className="text-ink text-3xl font-bold text-center mb-2">Potinho Premium</Text>
-        <Text className="text-muted text-center mb-8">
-          Desbloqueie tudo com uma compra única.
-        </Text>
+      <View style={{ flex: 1, paddingHorizontal: 32, justifyContent: 'center' }}>
+        <View style={{ alignItems: 'center' }}>
+          <Text
+            className="font-bodyBold"
+            style={{
+              color: '#B8321E',
+              fontSize: 12,
+              letterSpacing: 3,
+              textTransform: 'uppercase',
+              marginBottom: 8,
+            }}
+          >
+            ✦ potinho premium ✦
+          </Text>
+          <Text
+            className="font-display"
+            style={{
+              color: '#231208',
+              fontSize: 52,
+              lineHeight: 56,
+              letterSpacing: -1.5,
+              textAlign: 'center',
+              marginBottom: 8,
+            }}
+          >
+            desbloqueia{'\n'}tudo.
+          </Text>
+          <Text
+            className="font-body"
+            style={{ color: '#4A2E1E', fontSize: 16, textAlign: 'center', marginBottom: 32 }}
+          >
+            uma compra, pra sempre.
+          </Text>
+        </View>
 
-        <View className="bg-paper rounded-3xl p-6 mb-8">
-          {BENEFITS.map((b) => (
-            <View key={b.label} className="flex-row items-center mb-3">
-              <Text className="text-2xl mr-3">{b.icon}</Text>
-              <Text className="text-ink flex-1">{b.label}</Text>
+        <View
+          style={{
+            backgroundColor: '#FFFBEF',
+            borderRadius: 24,
+            borderWidth: 3,
+            borderColor: '#231208',
+            padding: 24,
+            marginBottom: 8,
+          }}
+        >
+          {BENEFITS.map((b, i) => (
+            <View
+              key={b.label}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: i === BENEFITS.length - 1 ? 0 : 14,
+              }}
+            >
+              <Text style={{ fontSize: 22, marginRight: 14 }}>{b.icon}</Text>
+              <Text className="font-bodyMedium" style={{ color: '#231208', fontSize: 16, flex: 1 }}>
+                {b.label}
+              </Text>
             </View>
           ))}
         </View>
       </View>
 
-      <View className="px-6 pb-6 gap-3">
+      <View style={{ paddingHorizontal: 24, paddingBottom: 24, gap: 10 }}>
         {available ? (
           <PrimaryButton onPress={buy} disabled={loading}>
-            {loading ? 'Processando...' : `Comprar por ${price}`}
+            {loading ? '...' : `comprar por ${price}`}
           </PrimaryButton>
         ) : (
-          <Text className="text-muted text-center">
-            Compras indisponíveis neste dispositivo
+          <Text
+            className="font-body"
+            style={{ color: '#4A2E1E', textAlign: 'center', fontStyle: 'italic' }}
+          >
+            compras indisponíveis neste dispositivo
           </Text>
         )}
-        <Pressable onPress={() => router.back()} className="py-2">
-          <Text className="text-muted text-center">Agora não</Text>
+        <Pressable onPress={() => router.back()} style={{ paddingVertical: 10, alignItems: 'center' }}>
+          <Text className="font-bodyMedium" style={{ color: '#4A2E1E', fontSize: 14 }}>
+            agora não
+          </Text>
         </Pressable>
       </View>
     </SafeAreaView>

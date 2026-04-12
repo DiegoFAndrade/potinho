@@ -23,46 +23,91 @@ export default function AddTask() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-cream">
-      <View className="px-6 pt-4 flex-row justify-between items-center">
-        <Text className="text-ink text-xl font-semibold">Nova tarefa</Text>
-        <Pressable onPress={() => router.back()} accessibilityLabel="Fechar">
-          <Text className="text-2xl">✕</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
+      <View style={{ paddingHorizontal: 24, paddingTop: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <View>
+          <Text
+            className="font-bodyBold"
+            style={{ color: '#B8321E', fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
+          >
+            ✦ nova anotação
+          </Text>
+          <Text
+            className="font-display"
+            style={{ color: '#231208', fontSize: 36, lineHeight: 40, letterSpacing: -0.8, marginTop: 2 }}
+          >
+            joga no{'\n'}potinho
+          </Text>
+        </View>
+        <Pressable onPress={() => router.back()} accessibilityLabel="Fechar" hitSlop={12}>
+          <Text style={{ fontSize: 28, color: '#231208' }}>✕</Text>
         </Pressable>
       </View>
 
-      <View className="flex-1 px-6 pt-6">
+      <View style={{ flex: 1, paddingHorizontal: 24, paddingTop: 28 }}>
         {isPremium && jars.length > 1 && (
-          <View className="flex-row flex-wrap mb-4 gap-2">
-            {jars.map((j) => (
-              <Pressable
-                key={j.id}
-                onPress={() => setJarId(j.id)}
-                className={`px-3 py-2 rounded-full ${jarId === j.id ? 'bg-brand' : 'bg-jar'}`}
-              >
-                <Text className={jarId === j.id ? 'text-white' : 'text-ink'}>{j.name}</Text>
-              </Pressable>
-            ))}
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+            {jars.map((j) => {
+              const selected = jarId === j.id;
+              return (
+                <Pressable
+                  key={j.id}
+                  onPress={() => setJarId(j.id)}
+                  style={{
+                    paddingHorizontal: 14,
+                    paddingVertical: 8,
+                    borderRadius: 999,
+                    borderWidth: 2,
+                    borderColor: '#231208',
+                    backgroundColor: selected ? '#E8503D' : '#FFD5C8',
+                  }}
+                >
+                  <Text
+                    className="font-bodyBold"
+                    style={{ color: selected ? '#FFFBEF' : '#231208', fontSize: 13 }}
+                  >
+                    {j.name}
+                  </Text>
+                </Pressable>
+              );
+            })}
           </View>
         )}
 
-        <TextInput
-          value={text}
-          onChangeText={setText}
-          placeholder="O que você tá adiando?"
-          placeholderTextColor="#8A7868"
-          className="bg-paper rounded-2xl px-4 py-3 text-ink text-lg"
-          autoFocus
-          multiline
-        />
+        <View
+          style={{
+            backgroundColor: '#FFFBEF',
+            borderRadius: 20,
+            borderWidth: 3,
+            borderColor: '#231208',
+            padding: 18,
+            minHeight: 140,
+          }}
+        >
+          <TextInput
+            value={text}
+            onChangeText={setText}
+            placeholder="o que tá te travando?"
+            placeholderTextColor="#8A7868"
+            style={{
+              fontFamily: 'Fraunces_500Medium',
+              color: '#231208',
+              fontSize: 22,
+              lineHeight: 30,
+              textAlignVertical: 'top',
+            }}
+            autoFocus
+            multiline
+          />
+        </View>
       </View>
 
-      <View className="px-6 pb-6 gap-3">
+      <View style={{ paddingHorizontal: 24, paddingBottom: 24, gap: 10 }}>
         <PrimaryButton onPress={() => submit(false)} disabled={!text.trim()}>
-          Adicionar
+          adicionar
         </PrimaryButton>
         <PrimaryButton onPress={() => submit(true)} disabled={!text.trim()} variant="secondary">
-          Adicionar e continuar
+          + outra
         </PrimaryButton>
       </View>
     </SafeAreaView>
