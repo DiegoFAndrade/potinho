@@ -3,21 +3,26 @@ import { useAppStore } from '@/stores/appStore';
 
 let shakePlayer: AudioPlayer | null = null;
 
-const ensureShake = (): AudioPlayer => {
-  if (!shakePlayer) {
+const ensureShake = (): AudioPlayer | null => {
+  if (shakePlayer) return shakePlayer;
+  try {
     // TODO: replace with a royalty-free jar/shake sound before first build.
-    // Freesound.org has several under CC0. Save as assets/sounds/shake.mp3.
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    shakePlayer = createAudioPlayer(require('../../assets/sounds/shake.mp3'));
+    // Add file at assets/sounds/shake.mp3 (CC0 from freesound.org) and uncomment:
+    // shakePlayer = createAudioPlayer(require('../../assets/sounds/shake.mp3'));
+    // Until then, sound is a no-op so the app still builds and runs.
+    void createAudioPlayer; // silence unused import warning
+    return null;
+  } catch {
+    return null;
   }
-  return shakePlayer;
 };
 
 export const soundService = {
   playShake: () => {
     if (!useAppStore.getState().soundEnabled) return;
+    const p = ensureShake();
+    if (!p) return;
     try {
-      const p = ensureShake();
       p.seekTo(0);
       p.play();
     } catch {
