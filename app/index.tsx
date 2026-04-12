@@ -11,20 +11,6 @@ import { useJarStore } from '@/stores/jarStore';
 import { useTaskStore } from '@/stores/taskStore';
 import { useAppStore } from '@/stores/appStore';
 
-const Dot = ({ top, left, color, size = 6 }: { top: number; left: number; color: string; size?: number }) => (
-  <View
-    style={{
-      position: 'absolute',
-      top,
-      left,
-      width: size,
-      height: size,
-      borderRadius: size / 2,
-      backgroundColor: color,
-    }}
-  />
-);
-
 export default function Home() {
   const router = useRouter();
   const onboardingDone = useAppStore((s) => s.onboardingDone);
@@ -43,25 +29,10 @@ export default function Home() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
-      {/* Decorative dots scattered around background */}
-      <Dot top={20} left={40} color="#E8503D" />
-      <Dot top={50} left={280} color="#D9A520" size={8} />
-      <Dot top={120} left={30} color="#89A47C" />
-      <Dot top={200} left={320} color="#E8503D" size={4} />
-      <Dot top={300} left={20} color="#D9A520" />
-
-      {/* Header row */}
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'flex-start',
-          justifyContent: 'space-between',
-          paddingHorizontal: 24,
-          paddingTop: 8,
-          paddingBottom: 4,
-        }}
-      >
-        <View>
+      {/* Header — clean, breathing room */}
+      <View style={{ paddingHorizontal: 24, paddingTop: 8, paddingBottom: 16 }}>
+        {/* Top row: kicker + nav icons */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <Text
             className="font-bodyBold"
             style={{
@@ -73,45 +44,40 @@ export default function Home() {
           >
             ✦ {jar.name}
           </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 18 }}>
+            <Pressable onPress={() => router.push('/tasks')} accessibilityLabel="Lista de tarefas" hitSlop={10}>
+              <Text style={{ fontSize: 20 }}>📋</Text>
+            </Pressable>
+            <Pressable onPress={() => router.push('/settings')} accessibilityLabel="Configurações" hitSlop={10}>
+              <Text style={{ fontSize: 20 }}>⚙️</Text>
+            </Pressable>
+          </View>
+        </View>
+
+        {/* Title + streak inline */}
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 14, marginTop: 2 }}>
           <Text
             className="font-display"
             style={{
               color: '#231208',
               fontSize: 44,
               lineHeight: 48,
-              marginTop: -2,
               letterSpacing: -1,
             }}
           >
             Potinho
           </Text>
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 14, marginTop: 18 }}>
-          <Pressable onPress={() => router.push('/tasks')} accessibilityLabel="Lista de tarefas">
-            <Text style={{ fontSize: 22 }}>📋</Text>
-          </Pressable>
-          <Pressable onPress={() => router.push('/settings')} accessibilityLabel="Configurações">
-            <Text style={{ fontSize: 22 }}>⚙️</Text>
-          </Pressable>
+          {streak > 0 && <Streak count={streak} />}
         </View>
       </View>
 
-      {/* Streak floating */}
-      {streak > 0 && (
-        <View style={{ position: 'absolute', top: 92, right: 28, zIndex: 10 }}>
-          <Streak count={streak} />
-        </View>
-      )}
-
-      {/* Main area */}
+      {/* Main area — jar centered with generous space */}
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 }}>
-        <View>
-          <Jar ref={jarRef} taskCount={activeCount} />
-        </View>
+        <Jar ref={jarRef} taskCount={activeCount} />
 
-        {/* task count label under jar */}
+        {/* Task count caption */}
         {!drawnTask && (
-          <View style={{ alignItems: 'center', marginTop: 4 }}>
+          <View style={{ alignItems: 'center', marginTop: 12 }}>
             <Text
               className="font-bodyBold"
               style={{
@@ -129,15 +95,15 @@ export default function Home() {
         )}
 
         {drawnTask && (
-          <View style={{ marginTop: 20, width: '100%' }}>
+          <View style={{ marginTop: 24, width: '100%' }}>
             <TaskCard text={drawnTask.text} onDone={done} onSkip={skip} />
           </View>
         )}
       </View>
 
-      {/* Bottom actions — hidden when a task card is showing */}
+      {/* Bottom actions — hidden when task card showing */}
       {!drawnTask && (
-        <View style={{ paddingHorizontal: 24, paddingBottom: 12, gap: 12 }}>
+        <View style={{ paddingHorizontal: 24, paddingBottom: 16, gap: 12 }}>
           <PrimaryButton onPress={() => router.push('/add-task')} variant="secondary">
             + Criar tarefa
           </PrimaryButton>
