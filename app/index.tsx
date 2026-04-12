@@ -55,20 +55,18 @@ export default function Home() {
         </View>
 
         {/* Title + streak inline */}
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 14, marginTop: 2 }}>
-          <Text
-            className="font-display"
-            style={{
-              color: '#231208',
-              fontSize: 44,
-              lineHeight: 48,
-              letterSpacing: -1,
-            }}
-          >
-            Potinho
-          </Text>
-          {streak > 0 && <Streak count={streak} />}
-        </View>
+        <Text
+          className="font-display"
+          style={{
+            color: '#231208',
+            fontSize: 44,
+            lineHeight: 48,
+            letterSpacing: -1,
+            marginTop: 2,
+          }}
+        >
+          Potinho
+        </Text>
       </View>
 
       {/* Main area — jar centered with generous space */}
