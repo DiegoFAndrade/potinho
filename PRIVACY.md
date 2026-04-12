@@ -22,4 +22,4 @@ Compras são processadas diretamente pelo Google Play. Não temos acesso a dados
 
 ## Contato
 
-Para dúvidas, envie e-mail para: [seu-email@dominio.com]
+Para dúvidas, envie e-mail para: potinho@gmail.com
