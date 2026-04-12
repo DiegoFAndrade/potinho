@@ -6,11 +6,11 @@ import { PrimaryButton } from '@/components/PrimaryButton';
 import { purchaseService } from '@/services/purchaseService';
 
 const BENEFITS = [
-  { icon: '🚫', label: 'sem anúncios, nunca mais' },
-  { icon: '🫙', label: 'potinhos ilimitados' },
-  { icon: '🎨', label: 'temas visuais extras' },
-  { icon: '📊', label: 'estatísticas detalhadas' },
-  { icon: '📅', label: 'histórico sem limite' },
+  { icon: '🚫', label: 'Sem anúncios, nunca mais' },
+  { icon: '🫙', label: 'Potinhos ilimitados' },
+  { icon: '🎨', label: 'Temas visuais extras' },
+  { icon: '📊', label: 'Estatísticas detalhadas' },
+  { icon: '📅', label: 'Histórico sem limite' },
 ];
 
 export default function Paywall() {
@@ -34,10 +34,10 @@ export default function Paywall() {
     const res = await purchaseService.buyPremium();
     setLoading(false);
     if (res.ok) {
-      Alert.alert('premium ativado! 🎉', 'obrigado pelo apoio.');
+      Alert.alert('Premium ativado! 🎉', 'Obrigado pelo apoio.');
       router.back();
     } else if (res.error) {
-      Alert.alert('compra não concluída', res.error);
+      Alert.alert('Compra não concluída', res.error);
     }
   };
 
@@ -74,13 +74,13 @@ export default function Paywall() {
               marginBottom: 8,
             }}
           >
-            desbloqueia{'\n'}tudo.
+            Desbloqueia{'\n'}tudo.
           </Text>
           <Text
             className="font-body"
             style={{ color: '#4A2E1E', fontSize: 16, textAlign: 'center', marginBottom: 32 }}
           >
-            uma compra, pra sempre.
+            Uma compra, pra sempre.
           </Text>
         </View>
 
@@ -115,7 +115,7 @@ export default function Paywall() {
       <View style={{ paddingHorizontal: 24, paddingBottom: 24, gap: 10 }}>
         {available ? (
           <PrimaryButton onPress={buy} disabled={loading}>
-            {loading ? '...' : `comprar por ${price}`}
+            {loading ? '...' : `Comprar por ${price}`}
           </PrimaryButton>
         ) : (
           <Text
@@ -127,7 +127,7 @@ export default function Paywall() {
         )}
         <Pressable onPress={() => router.back()} style={{ paddingVertical: 10, alignItems: 'center' }}>
           <Text className="font-bodyMedium" style={{ color: '#4A2E1E', fontSize: 14 }}>
-            agora não
+            Agora não
           </Text>
         </Pressable>
       </View>

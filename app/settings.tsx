@@ -67,7 +67,7 @@ export default function Settings() {
             className="font-display"
             style={{ color: '#231208', fontSize: 40, lineHeight: 44, letterSpacing: -0.8, marginTop: 2 }}
           >
-            config
+            Config
           </Text>
         </View>
         <Pressable onPress={() => router.back()} hitSlop={12}>
@@ -77,7 +77,7 @@ export default function Settings() {
 
       <View style={{ paddingHorizontal: 24, paddingTop: 24 }}>
         <Row
-          label="som do sorteio"
+          label="Som do sorteio"
           right={
             <Switch
               value={soundEnabled}
@@ -88,7 +88,7 @@ export default function Settings() {
           }
         />
         <Row
-          label="vibração"
+          label="Vibração"
           right={
             <Switch
               value={hapticsEnabled}
@@ -101,7 +101,7 @@ export default function Settings() {
 
         {!isPremium && (
           <Row
-            label="✦ virar premium"
+            label="✦ Virar premium"
             right={
               <Text
                 className="font-bodyBlack"
@@ -116,14 +116,14 @@ export default function Settings() {
 
         {isPremium && (
           <Row
-            label="📊 estatísticas"
+            label="📊 Estatísticas"
             right={<Text style={{ color: '#4A2E1E', fontSize: 20 }}>›</Text>}
             onPress={() => router.push('/stats')}
           />
         )}
 
         <Row
-          label="política de privacidade"
+          label="Política de privacidade"
           right={<Text style={{ color: '#4A2E1E', fontSize: 20 }}>›</Text>}
           onPress={() => Linking.openURL(PRIVACY_URL)}
         />

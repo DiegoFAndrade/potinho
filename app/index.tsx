@@ -83,7 +83,7 @@ export default function Home() {
               letterSpacing: -1,
             }}
           >
-            potinho
+            Potinho
           </Text>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 14, marginTop: 18 }}>
@@ -122,7 +122,7 @@ export default function Home() {
               }}
             >
               {activeCount === 0
-                ? '— vazio, adicione algo —'
+                ? '— Vazio, adicione algo —'
                 : `— ${activeCount} ${activeCount === 1 ? 'coisa' : 'coisas'} pra fazer —`}
             </Text>
           </View>
@@ -138,7 +138,7 @@ export default function Home() {
       {/* Bottom actions */}
       <View style={{ paddingHorizontal: 24, paddingBottom: 12, gap: 12 }}>
         <PrimaryButton onPress={() => router.push('/add-task')} variant="secondary">
-          + anotar tarefa
+          + Criar tarefa
         </PrimaryButton>
         <PrimaryButton
           onPress={draw}

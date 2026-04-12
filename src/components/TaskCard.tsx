@@ -74,12 +74,12 @@ export function TaskCard({ text, onDone, onSkip }: Props) {
         <View style={{ flexDirection: 'row', gap: 10 }}>
           <View style={{ flex: 1 }}>
             <PrimaryButton onPress={onDone} testID="task-card-done">
-              feito!
+              Feito!
             </PrimaryButton>
           </View>
           <View style={{ flex: 1 }}>
             <PrimaryButton onPress={onSkip} variant="secondary" testID="task-card-skip">
-              depois
+              Depois
             </PrimaryButton>
           </View>
         </View>

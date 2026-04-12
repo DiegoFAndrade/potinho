@@ -36,7 +36,7 @@ export default function AddTask() {
             className="font-display"
             style={{ color: '#231208', fontSize: 36, lineHeight: 40, letterSpacing: -0.8, marginTop: 2 }}
           >
-            joga no{'\n'}potinho
+            Joga no{'\n'}potinho
           </Text>
         </View>
         <Pressable onPress={() => router.back()} accessibilityLabel="Fechar" hitSlop={12}>
@@ -87,7 +87,7 @@ export default function AddTask() {
           <TextInput
             value={text}
             onChangeText={setText}
-            placeholder="o que tá te travando?"
+            placeholder="O que tá te travando?"
             placeholderTextColor="#8A7868"
             style={{
               fontFamily: 'Fraunces_500Medium',
@@ -104,10 +104,10 @@ export default function AddTask() {
 
       <View style={{ paddingHorizontal: 24, paddingBottom: 24, gap: 10 }}>
         <PrimaryButton onPress={() => submit(false)} disabled={!text.trim()}>
-          adicionar
+          Adicionar
         </PrimaryButton>
         <PrimaryButton onPress={() => submit(true)} disabled={!text.trim()} variant="secondary">
-          + outra
+          + Outra
         </PrimaryButton>
       </View>
     </SafeAreaView>

@@ -78,7 +78,7 @@ export default function Stats() {
             className="font-display"
             style={{ color: '#231208', fontSize: 40, lineHeight: 44, letterSpacing: -0.8, marginTop: 2 }}
           >
-            stats
+            Stats
           </Text>
         </View>
         <Pressable onPress={() => router.back()} hitSlop={12}>

@@ -131,7 +131,7 @@ export default function Onboarding() {
           </View>
 
           <PrimaryButton onPress={next}>
-            {step === SLIDES.length - 1 ? 'bora!' : 'próximo →'}
+            {step === SLIDES.length - 1 ? 'Bora!' : 'Próximo →'}
           </PrimaryButton>
         </View>
       </SafeAreaView>
@@ -189,7 +189,7 @@ export default function Onboarding() {
           <TextInput
             value={firstTask}
             onChangeText={setFirstTask}
-            placeholder="ex: lavar a louça"
+            placeholder="Ex: lavar a louça"
             placeholderTextColor="#8A7868"
             style={{
               fontFamily: 'Fraunces_500Medium',
@@ -204,7 +204,7 @@ export default function Onboarding() {
         <View style={{ flex: 1 }} />
 
         <PrimaryButton onPress={finish} disabled={!firstTask.trim()}>
-          começar ✦
+          Começar ✦
         </PrimaryButton>
       </View>
     </SafeAreaView>

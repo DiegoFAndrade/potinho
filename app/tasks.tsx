@@ -71,7 +71,7 @@ export default function TasksScreen() {
             className="font-display"
             style={{ color: '#231208', fontSize: 40, lineHeight: 44, letterSpacing: -0.8, marginTop: 2 }}
           >
-            tarefas
+            Tarefas
           </Text>
         </View>
         <Pressable onPress={() => router.back()} hitSlop={12}>
@@ -96,7 +96,7 @@ export default function TasksScreen() {
               className="font-body"
               style={{ color: '#4A2E1E', fontStyle: 'italic', marginBottom: 16 }}
             >
-              nada ainda. joga algo aí.
+              Nada ainda. Joga algo aí.
             </Text>
           }
         />
@@ -140,7 +140,7 @@ export default function TasksScreen() {
           )}
           ListEmptyComponent={
             <Text className="font-body" style={{ color: '#4A2E1E', fontStyle: 'italic' }}>
-              ainda nenhuma.
+              Ainda nenhuma.
             </Text>
           }
         />
