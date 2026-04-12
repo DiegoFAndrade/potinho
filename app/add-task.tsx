@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, Pressable } from 'react-native';
+import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { PrimaryButton } from '@/components/PrimaryButton';
@@ -25,90 +25,96 @@ export default function AddTask() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
-      <View style={{ paddingHorizontal: 24, paddingTop: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <View>
-          <Text
-            className="font-bodyBold"
-            style={{ color: '#B8321E', fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
-          >
-            ✦ nova anotação
-          </Text>
-          <Text
-            className="font-display"
-            style={{ color: '#231208', fontSize: 36, lineHeight: 40, letterSpacing: -0.8, marginTop: 2 }}
-          >
-            Joga no{'\n'}potinho
-          </Text>
-        </View>
-        <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
-      </View>
-
-      <View style={{ flex: 1, paddingHorizontal: 24, paddingTop: 28 }}>
-        {isPremium && jars.length > 1 && (
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
-            {jars.map((j) => {
-              const selected = jarId === j.id;
-              return (
-                <Pressable
-                  key={j.id}
-                  onPress={() => setJarId(j.id)}
-                  style={{
-                    paddingHorizontal: 14,
-                    paddingVertical: 8,
-                    borderRadius: 999,
-                    borderWidth: 2,
-                    borderColor: '#231208',
-                    backgroundColor: selected ? '#E8503D' : '#FFD5C8',
-                  }}
-                >
-                  <Text
-                    className="font-bodyBold"
-                    style={{ color: selected ? '#FFFBEF' : '#231208', fontSize: 13 }}
-                  >
-                    {j.name}
-                  </Text>
-                </Pressable>
-              );
-            })}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+      >
+        <View style={{ paddingHorizontal: 24, paddingTop: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <View>
+            <Text
+              className="font-bodyBold"
+              style={{ color: '#B8321E', fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
+            >
+              ✦ nova anotação
+            </Text>
+            <Text
+              className="font-display"
+              style={{ color: '#231208', fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
+            >
+              Joga no potinho
+            </Text>
           </View>
-        )}
-
-        <View
-          style={{
-            backgroundColor: '#FFFBEF',
-            borderRadius: 20,
-            borderWidth: 3,
-            borderColor: '#231208',
-            padding: 18,
-            minHeight: 140,
-          }}
-        >
-          <TextInput
-            value={text}
-            onChangeText={setText}
-            placeholder="O que tá te travando?"
-            placeholderTextColor="#8A7868"
-            style={{
-              fontFamily: 'Fraunces_500Medium',
-              color: '#231208',
-              fontSize: 22,
-              lineHeight: 30,
-              textAlignVertical: 'top',
-            }}
-            autoFocus
-            multiline
-          />
+          <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
         </View>
-      </View>
 
-      <View style={{ paddingHorizontal: 24, paddingBottom: 24, gap: 10 }}>
-        <PrimaryButton onPress={() => submit(false)} disabled={!text.trim()}>
-          Adicionar
-        </PrimaryButton>
-        <PrimaryButton onPress={() => submit(true)} disabled={!text.trim()} variant="secondary">
-          + Outra
-        </PrimaryButton>
-      </View>
+        <View style={{ flex: 1, paddingHorizontal: 24, paddingTop: 28 }}>
+          {isPremium && jars.length > 1 && (
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+              {jars.map((j) => {
+                const selected = jarId === j.id;
+                return (
+                  <Pressable
+                    key={j.id}
+                    onPress={() => setJarId(j.id)}
+                    style={{
+                      paddingHorizontal: 14,
+                      paddingVertical: 8,
+                      borderRadius: 999,
+                      borderWidth: 2,
+                      borderColor: '#231208',
+                      backgroundColor: selected ? '#E8503D' : '#FFD5C8',
+                    }}
+                  >
+                    <Text
+                      className="font-bodyBold"
+                      style={{ color: selected ? '#FFFBEF' : '#231208', fontSize: 13 }}
+                    >
+                      {j.name}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+          )}
+
+          <View
+            style={{
+              backgroundColor: '#FFFBEF',
+              borderRadius: 20,
+              borderWidth: 3,
+              borderColor: '#231208',
+              padding: 18,
+              minHeight: 100,
+            }}
+          >
+            <TextInput
+              value={text}
+              onChangeText={setText}
+              placeholder="O que está te travando?"
+              placeholderTextColor="#8A7868"
+              style={{
+                fontFamily: 'Fraunces_500Medium',
+                color: '#231208',
+                fontSize: 22,
+                lineHeight: 30,
+                textAlignVertical: 'top',
+              }}
+              autoFocus
+              multiline
+            />
+          </View>
+        </View>
+
+        <View style={{ paddingHorizontal: 24, paddingBottom: 16, gap: 10 }}>
+          <PrimaryButton onPress={() => submit(false)} disabled={!text.trim()}>
+            Adicionar
+          </PrimaryButton>
+          <PrimaryButton onPress={() => submit(true)} disabled={!text.trim()} variant="secondary">
+            + Outra
+          </PrimaryButton>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

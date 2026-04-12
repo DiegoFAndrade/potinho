@@ -6,12 +6,8 @@ let shakePlayer: AudioPlayer | null = null;
 const ensureShake = (): AudioPlayer | null => {
   if (shakePlayer) return shakePlayer;
   try {
-    // TODO: replace with a royalty-free jar/shake sound before first build.
-    // Add file at assets/sounds/shake.mp3 (CC0 from freesound.org) and uncomment:
-    // shakePlayer = createAudioPlayer(require('../../assets/sounds/shake.mp3'));
-    // Until then, sound is a no-op so the app still builds and runs.
-    void createAudioPlayer; // silence unused import warning
-    return null;
+    shakePlayer = createAudioPlayer(require('../../assets/sound.wav'));
+    return shakePlayer;
   } catch {
     return null;
   }

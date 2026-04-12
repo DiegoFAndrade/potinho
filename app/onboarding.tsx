@@ -88,7 +88,7 @@ export default function Onboarding() {
             className="font-display"
             style={{
               color: '#231208',
-              fontSize: 40,
+              fontSize: 32,
               lineHeight: 42,
               letterSpacing: -0.8,
               marginTop: 8,
@@ -163,7 +163,7 @@ export default function Onboarding() {
             marginBottom: 12,
           }}
         >
-          Qual coisa{'\n'}você tá{'\n'}adiando?
+          Qual coisa{'\n'}você está{'\n'}adiando?
         </Text>
         <Text
           className="font-body"

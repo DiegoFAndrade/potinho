@@ -70,7 +70,7 @@ export default function TasksScreen() {
           </Text>
           <Text
             className="font-display"
-            style={{ color: '#231208', fontSize: 40, lineHeight: 44, letterSpacing: -0.8, marginTop: 2 }}
+            style={{ color: '#231208', fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
           >
             Tarefas
           </Text>
