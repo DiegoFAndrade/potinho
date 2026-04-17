@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { View, Text, FlatList, Pressable } from 'react-native';
+import { View, Text, FlatList, Pressable, TextInput, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
 import { IconButton } from '@/components/IconButton';
 import { useJarStore } from '@/stores/jarStore';
 import { useTaskStore } from '@/stores/taskStore';
@@ -75,43 +76,112 @@ export default function TasksScreen() {
   const removeTask = useTaskStore((s) => s.removeTask);
   const isPremium = useAppStore((s) => s.isPremium);
   const [tab, setTab] = useState<Tab>('active');
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editText, setEditText] = useState('');
 
   const jar = jars[0];
   if (!jar) return null;
 
   const active = tasks.filter((t) => t.jarId === jar.id && t.status === 'active');
   const sevenDaysAgo = Date.now() - 7 * 86_400_000;
-  const completed = tasks
-    .filter((t) => t.jarId === jar.id && t.status === 'done' && t.completedAt != null)
+  const allCompleted = tasks.filter(
+    (t) => t.jarId === jar.id && t.status === 'done' && t.completedAt != null,
+  );
+  const completed = allCompleted
     .filter((t) => isPremium || (t.completedAt ?? 0) >= sevenDaysAgo)
     .sort((a, b) => (b.completedAt ?? 0) - (a.completedAt ?? 0));
+  const hiddenCount = allCompleted.length - completed.length;
 
-  const renderActive = ({ item }: { item: Task }) => (
-    <View
-      style={{
-        backgroundColor: '#FFFBEF',
-        borderRadius: 14,
-        borderWidth: 2,
-        borderColor: '#231208',
-        paddingVertical: 10,
-        paddingHorizontal: 14,
-        marginBottom: 8,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-    >
-      <Text
-        className="font-bodyMedium"
-        style={{ color: '#231208', flex: 1, fontSize: 15, lineHeight: 20 }}
+  const handleDelete = (id: string) => {
+    Alert.alert('Remover tarefa?', undefined, [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Remover', style: 'destructive', onPress: () => removeTask(id) },
+    ]);
+  };
+
+  const handleEditStart = (task: Task) => {
+    setEditingId(task.id);
+    setEditText(task.text);
+  };
+
+  const handleEditSave = () => {
+    if (editingId && editText.trim()) {
+      useTaskStore.getState().editTask(editingId, editText.trim());
+    }
+    setEditingId(null);
+    setEditText('');
+  };
+
+  const handleEditCancel = () => {
+    setEditingId(null);
+    setEditText('');
+  };
+
+  const renderActive = ({ item }: { item: Task }) => {
+    const isEditing = editingId === item.id;
+
+    return (
+      <View
+        style={{
+          backgroundColor: '#FFFBEF',
+          borderRadius: 14,
+          borderWidth: 2,
+          borderColor: '#231208',
+          paddingVertical: 10,
+          paddingHorizontal: 14,
+          marginBottom: 8,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
       >
-        {item.text}
-      </Text>
-      <Pressable onPress={() => removeTask(item.id)} hitSlop={10} accessibilityLabel="Remover tarefa">
-        <Text style={{ color: '#B8321E', fontSize: 20, paddingHorizontal: 6 }}>✕</Text>
-      </Pressable>
-    </View>
-  );
+        {isEditing ? (
+          <>
+            <TextInput
+              value={editText}
+              onChangeText={setEditText}
+              autoFocus
+              className="font-bodyMedium"
+              style={{
+                flex: 1,
+                fontSize: 15,
+                lineHeight: 20,
+                color: '#231208',
+                paddingVertical: 0,
+              }}
+              onSubmitEditing={handleEditSave}
+            />
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginLeft: 8 }}>
+              <Pressable onPress={handleEditSave} hitSlop={10} accessibilityLabel="Salvar edição">
+                <Feather name="check" size={20} color="#89A47C" />
+              </Pressable>
+              <Pressable onPress={handleEditCancel} hitSlop={10} accessibilityLabel="Cancelar edição">
+                <Feather name="x" size={20} color="#4A2E1E" />
+              </Pressable>
+              <Pressable onPress={() => { handleEditCancel(); handleDelete(item.id); }} hitSlop={10} accessibilityLabel="Remover tarefa">
+                <Feather name="trash-2" size={18} color="#B8321E" />
+              </Pressable>
+            </View>
+          </>
+        ) : (
+          <Pressable
+            onPress={() => handleEditStart(item)}
+            style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
+          >
+            <Text
+              className="font-bodyMedium"
+              style={{ color: '#231208', flex: 1, fontSize: 15, lineHeight: 20 }}
+            >
+              {item.text}
+            </Text>
+            <Pressable onPress={() => handleDelete(item.id)} hitSlop={10} accessibilityLabel="Remover tarefa">
+              <Text style={{ color: '#B8321E', fontSize: 20, paddingHorizontal: 6 }}>✕</Text>
+            </Pressable>
+          </Pressable>
+        )}
+      </View>
+    );
+  };
 
   const renderDone = ({ item }: { item: Task }) => (
     <View
@@ -221,8 +291,46 @@ export default function TasksScreen() {
                   className="font-body"
                   style={{ color: '#4A2E1E', fontStyle: 'italic', textAlign: 'center', marginTop: 40 }}
                 >
-                  Ainda nenhuma.
+                  Suas tarefas concluídas aparecem aqui.
                 </Text>
+              }
+              ListFooterComponent={
+                !isPremium && hiddenCount > 0 ? (
+                  <View
+                    style={{
+                      backgroundColor: '#89A47C',
+                      borderRadius: 16,
+                      borderWidth: 2,
+                      borderColor: '#231208',
+                      padding: 16,
+                      marginTop: 8,
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text
+                      className="font-bodyMedium"
+                      style={{ color: '#FFFBEF', fontSize: 14, textAlign: 'center', marginBottom: 10 }}
+                    >
+                      Você tem mais {hiddenCount} {hiddenCount === 1 ? 'tarefa concluída' : 'tarefas concluídas'}.
+                      {'\n'}Premium desbloqueia o histórico completo.
+                    </Text>
+                    <Pressable
+                      onPress={() => router.push('/paywall')}
+                      style={{
+                        backgroundColor: '#FFFBEF',
+                        borderRadius: 10,
+                        paddingVertical: 8,
+                        paddingHorizontal: 18,
+                        borderWidth: 2,
+                        borderColor: '#231208',
+                      }}
+                    >
+                      <Text className="font-bodyBold" style={{ color: '#231208', fontSize: 14 }}>
+                        Ver mais →
+                      </Text>
+                    </Pressable>
+                  </View>
+                ) : null
               }
             />
           </>
