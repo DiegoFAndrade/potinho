@@ -22,7 +22,7 @@ export default function AddTask() {
   const isPremium = useAppStore((s) => s.isPremium);
   const [text, setText] = useState('');
   const [jarId, setJarId] = useState(jars[0]?.id ?? '');
-  const [addedCount, setAddedCount] = useState(0);
+  const activeCount = useTaskStore((s) => (jarId ? s.activeIn(jarId).length : 0));
   const inputRef = useRef<TextInput>(null);
 
   // Confirmation animation
@@ -47,7 +47,6 @@ export default function AddTask() {
     if (!trimmed || !jarId) return;
     useTaskStore.getState().addTask(jarId, trimmed);
     setText('');
-    setAddedCount((c) => c + 1);
     showConfirmation();
     inputRef.current?.focus();
   };
@@ -169,23 +168,21 @@ export default function AddTask() {
               >
                 No potinho!
               </Text>
-              {addedCount > 1 && (
-                <View
-                  style={{
-                    backgroundColor: '#FFFBEF',
-                    borderRadius: 10,
-                    paddingHorizontal: 7,
-                    paddingVertical: 1,
-                  }}
+              <View
+                style={{
+                  backgroundColor: '#FFFBEF',
+                  borderRadius: 10,
+                  paddingHorizontal: 7,
+                  paddingVertical: 1,
+                }}
+              >
+                <Text
+                  className="font-bodyBlack"
+                  style={{ color: '#89A47C', fontSize: 11 }}
                 >
-                  <Text
-                    className="font-bodyBlack"
-                    style={{ color: '#89A47C', fontSize: 11 }}
-                  >
-                    {addedCount}
-                  </Text>
-                </View>
-              )}
+                  {activeCount}
+                </Text>
+              </View>
             </View>
           </Animated.View>
         </View>

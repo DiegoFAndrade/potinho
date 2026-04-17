@@ -164,20 +164,22 @@ export default function TasksScreen() {
             </View>
           </>
         ) : (
-          <Pressable
-            onPress={() => handleEditStart(item)}
-            style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
-          >
+          <>
             <Text
               className="font-bodyMedium"
               style={{ color: '#231208', flex: 1, fontSize: 15, lineHeight: 20 }}
             >
               {item.text}
             </Text>
-            <Pressable onPress={() => handleDelete(item.id)} hitSlop={10} accessibilityLabel="Remover tarefa">
-              <Text style={{ color: '#B8321E', fontSize: 20, paddingHorizontal: 6 }}>✕</Text>
-            </Pressable>
-          </Pressable>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginLeft: 8 }}>
+              <Pressable onPress={() => handleEditStart(item)} hitSlop={10} accessibilityLabel="Editar tarefa">
+                <Feather name="edit-2" size={17} color="#4A2E1E" />
+              </Pressable>
+              <Pressable onPress={() => handleDelete(item.id)} hitSlop={10} accessibilityLabel="Remover tarefa">
+                <Feather name="trash-2" size={17} color="#B8321E" />
+              </Pressable>
+            </View>
+          </>
         )}
       </View>
     );
