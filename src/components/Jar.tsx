@@ -83,7 +83,7 @@ export const Jar = forwardRef<JarHandle, Props>(({ taskCount }, ref) => {
     return new Promise<void>((resolve) => {
       resolveRef.current = resolve;
 
-      const t = 140; // ms per swing — slower, more dramatic
+      const t = 220; // ms per swing — matches ~4.5s sound
       const ease = Easing.inOut(Easing.ease);
 
       // Scale up then settle back (~3s total)

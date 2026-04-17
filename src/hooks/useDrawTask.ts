@@ -24,6 +24,9 @@ export const useDrawTask = (jarId: string) => {
 
     await jarRef.current?.shake();
 
+    // Fade out the sound smoothly over 800ms
+    soundService.fadeOut(800);
+
     const prevStreakDate = useAppStore.getState().streak.lastDrawDate;
     const today = toDateKey(new Date());
     const isFirstDrawToday = prevStreakDate !== today;
