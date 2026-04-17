@@ -47,6 +47,8 @@ function CelebrationToast({ message }: { message: string }) {
 
   return (
     <Animated.View
+      accessibilityLiveRegion="polite"
+      accessibilityLabel={message}
       style={[
         animStyle,
         {
@@ -115,7 +117,7 @@ export default function Home() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
       {/* Celebration toast */}
-      {celebration && <CelebrationToast message={celebration} />}
+      {celebration && <CelebrationToast message={celebration} key={celebration} />}
 
       {/* Header */}
       <View style={{ paddingHorizontal: 24, paddingTop: 8, paddingBottom: 16 }}>
@@ -153,7 +155,9 @@ export default function Home() {
 
       {/* Main area */}
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 }}>
-        <Jar ref={jarRef} taskCount={activeCount} />
+        <View accessibilityLabel={`Potinho com ${activeCount} tarefas`}>
+          <Jar ref={jarRef} taskCount={activeCount} />
+        </View>
 
         {!drawnTask && (
           <View style={{ alignItems: 'center', marginTop: 12 }}>

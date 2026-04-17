@@ -137,7 +137,7 @@ export default function Paywall() {
       <View style={{ paddingHorizontal: 24, paddingBottom: 24, gap: 10 }}>
         {available ? (
           <>
-            <PrimaryButton onPress={buy} disabled={loading}>
+            <PrimaryButton onPress={buy} disabled={loading} accessibilityHint="Compra única de R$ 6,90">
               {loading ? '...' : `Comprar por ${price}`}
             </PrimaryButton>
             <Text
@@ -160,7 +160,7 @@ export default function Paywall() {
             Agora não
           </Text>
         </Pressable>
-        <Pressable onPress={restore} disabled={restoring} style={{ paddingVertical: 6, alignItems: 'center' }}>
+        <Pressable onPress={restore} disabled={restoring} accessibilityRole="button" accessibilityHint="Restaura compra anterior" style={{ paddingVertical: 6, alignItems: 'center' }}>
           <Text className="font-body" style={{ color: '#8A7868', fontSize: 13, textDecorationLine: 'underline' }}>
             {restoring ? 'Restaurando...' : 'Restaurar compra'}
           </Text>

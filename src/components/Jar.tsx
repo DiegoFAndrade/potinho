@@ -127,7 +127,10 @@ export const Jar = forwardRef<JarHandle, Props>(({ taskCount }, ref) => {
   useImperativeHandle(ref, () => ({ shake }));
 
   return (
-    <View style={{ alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+    <View
+      style={{ alignItems: 'center', justifyContent: 'center', position: 'relative' }}
+      accessibilityLabel={`Potinho com ${taskCount} tarefas`}
+    >
       {/* decorative asterisks */}
       <Text
         className="font-display"
@@ -176,6 +179,8 @@ export const Jar = forwardRef<JarHandle, Props>(({ taskCount }, ref) => {
             source={POT_IMAGE}
             style={{ width: 200, height: 200 }}
             resizeMode="contain"
+            accessibilityRole="image"
+            accessibilityLabel="Potinho"
           />
         </View>
       </Animated.View>

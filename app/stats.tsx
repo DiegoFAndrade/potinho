@@ -15,7 +15,7 @@ export default function Stats() {
   const stats = computeStats(tasks);
 
   const Stat = ({ label, value, tint }: { label: string; value: string | number; tint: string }) => (
-    <View style={{ flex: 1, marginHorizontal: 5 }}>
+    <View style={{ flex: 1, marginHorizontal: 5 }} accessibilityLabel={`${label}: ${value}`}>
       <View
         style={{
           position: 'absolute',

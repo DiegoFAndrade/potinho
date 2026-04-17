@@ -13,7 +13,7 @@ export function TaskCard({ text, accepted, onAccept, onDone, onSkip }: Props) {
   if (accepted) {
     // "Doing" mode — compact banner with "Concluí!" button
     return (
-      <View>
+      <View accessibilityLabel={`Tarefa em andamento: ${text}`}>
         <View
           style={{
             position: 'absolute',
@@ -72,7 +72,7 @@ export function TaskCard({ text, accepted, onAccept, onDone, onSkip }: Props) {
 
   // "Just drawn" mode — full card with "Fazer" / "Depois"
   return (
-    <View>
+    <View accessibilityLabel={`Sua tarefa é: ${text}`}>
       <View
         style={{
           position: 'absolute',

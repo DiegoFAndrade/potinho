@@ -13,7 +13,7 @@ type Tab = 'active' | 'done';
 
 function TabButton({ label, count, selected, onPress }: { label: string; count: number; selected: boolean; onPress: () => void }) {
   return (
-    <Pressable onPress={onPress} style={{ flex: 1 }}>
+    <Pressable onPress={onPress} style={{ flex: 1 }} accessibilityRole="tab" accessibilityState={{ selected }}>
       <View style={{ position: 'relative', paddingRight: 3, paddingBottom: 3 }}>
         {selected && (
           <View

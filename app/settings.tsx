@@ -26,6 +26,7 @@ export default function Settings() {
   }) => (
     <Pressable
       onPress={onPress}
+      accessibilityRole={onPress ? 'button' : undefined}
       style={{
         flexDirection: 'row',
         alignItems: 'center',
@@ -83,6 +84,7 @@ export default function Settings() {
               onValueChange={toggleSound}
               trackColor={{ true: '#89A47C', false: '#E8D5B7' }}
               thumbColor="#FFFBEF"
+              accessibilityLabel={soundEnabled ? 'Som ativado' : 'Som desativado'}
             />
           }
         />
@@ -94,6 +96,7 @@ export default function Settings() {
               onValueChange={toggleHaptics}
               trackColor={{ true: '#89A47C', false: '#E8D5B7' }}
               thumbColor="#FFFBEF"
+              accessibilityLabel={hapticsEnabled ? 'Vibração ativada' : 'Vibração desativada'}
             />
           }
         />

@@ -8,6 +8,7 @@ interface Props {
   variant?: 'primary' | 'secondary' | 'ghost';
   compact?: boolean;
   testID?: string;
+  accessibilityHint?: string;
 }
 
 /**
@@ -22,6 +23,7 @@ export function PrimaryButton({
   variant = 'primary',
   compact,
   testID,
+  accessibilityHint,
 }: Props) {
   const fills = {
     primary: disabled ? '#F2A292' : '#E8503D',
@@ -56,6 +58,8 @@ export function PrimaryButton({
         onPress={onPress}
         disabled={disabled}
         accessibilityRole="button"
+        accessibilityState={{ disabled: !!disabled }}
+        accessibilityHint={accessibilityHint}
       >
         {({ pressed }) => (
           <View

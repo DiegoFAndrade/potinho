@@ -7,7 +7,7 @@ export function AdBanner() {
   const isPremium = useAppStore((s) => s.isPremium);
   if (isPremium) return null;
   return (
-    <View className="items-center">
+    <View className="items-center" accessibilityLabel="Anúncio">
       <BannerAd
         unitId={BANNER_ID}
         size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}

@@ -69,47 +69,49 @@ export default function Onboarding() {
             <View style={{ height: 2, flex: 1, backgroundColor: slide.accent }} />
           </View>
 
-          {/* Giant number */}
-          <Text
-            className="font-display"
-            style={{
-              color: slide.accent,
-              fontSize: 180,
-              lineHeight: 160,
-              marginLeft: -8,
-              marginBottom: 0,
-            }}
-          >
-            {step + 1}
-          </Text>
+          <View accessibilityLabel={`${slide.title.replace(/\n/g, ' ')}. ${slide.body}`}>
+            {/* Giant number */}
+            <Text
+              className="font-display"
+              style={{
+                color: slide.accent,
+                fontSize: 180,
+                lineHeight: 160,
+                marginLeft: -8,
+                marginBottom: 0,
+              }}
+            >
+              {step + 1}
+            </Text>
 
-          {/* Title */}
-          <Text
-            className="font-display"
-            style={{
-              color: '#231208',
-              fontSize: 32,
-              lineHeight: 42,
-              letterSpacing: -0.8,
-              marginTop: 8,
-            }}
-          >
-            {slide.title}
-          </Text>
+            {/* Title */}
+            <Text
+              className="font-display"
+              style={{
+                color: '#231208',
+                fontSize: 32,
+                lineHeight: 42,
+                letterSpacing: -0.8,
+                marginTop: 8,
+              }}
+            >
+              {slide.title}
+            </Text>
 
-          {/* Body */}
-          <Text
-            className="font-body"
-            style={{
-              color: '#4A2E1E',
-              fontSize: 17,
-              lineHeight: 26,
-              marginTop: 16,
-              maxWidth: 300,
-            }}
-          >
-            {slide.body}
-          </Text>
+            {/* Body */}
+            <Text
+              className="font-body"
+              style={{
+                color: '#4A2E1E',
+                fontSize: 17,
+                lineHeight: 26,
+                marginTop: 16,
+                maxWidth: 300,
+              }}
+            >
+              {slide.body}
+            </Text>
+          </View>
 
           <View style={{ flex: 1 }} />
 
@@ -118,6 +120,7 @@ export default function Onboarding() {
             {SLIDES.map((s, i) => (
               <View
                 key={i}
+                accessibilityLabel={`Passo ${i + 1} de 3`}
                 style={{
                   width: i === step ? 24 : 8,
                   height: 8,

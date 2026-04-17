@@ -9,12 +9,12 @@ interface Props {
 }
 
 /** Small sticker-style icon button with offset ink shadow. */
-export function IconButton({ icon, onPress, label, size = 42 }: Props) {
+export function IconButton({ icon, onPress, label, size = 48 }: Props) {
   const radius = size * 0.33;
   const shadow = 3;
 
   return (
-    <Pressable onPress={onPress} accessibilityLabel={label} hitSlop={10}>
+    <Pressable onPress={onPress} accessibilityLabel={label} accessibilityRole="button" hitSlop={10}>
       <View style={{ position: 'relative', paddingRight: shadow, paddingBottom: shadow }}>
         <View
           style={{

@@ -122,6 +122,7 @@ export default function AddTask() {
               onChangeText={setText}
               placeholder="O que está te travando?"
               placeholderTextColor="#8A7868"
+              accessibilityLabel="Texto da tarefa"
               style={{
                 fontFamily: 'Fraunces_500Medium',
                 color: '#231208',
@@ -136,6 +137,7 @@ export default function AddTask() {
 
           {/* Confirmation toast */}
           <Animated.View
+            accessibilityLiveRegion="polite"
             style={[
               confirmStyle,
               {
