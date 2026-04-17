@@ -1,6 +1,15 @@
-import { View, Text } from 'react-native';
+import { useEffect } from 'react';
+import { View, Text, Image } from 'react-native';
 import { Redirect, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSequence,
+  withTiming,
+  withDelay,
+  Easing,
+} from 'react-native-reanimated';
 import { Jar } from '@/components/Jar';
 import { TaskCard } from '@/components/TaskCard';
 import { PrimaryButton } from '@/components/PrimaryButton';
@@ -11,15 +20,91 @@ import { useJarStore } from '@/stores/jarStore';
 import { useTaskStore } from '@/stores/taskStore';
 import { useAppStore } from '@/stores/appStore';
 
+const POT_IMAGE = require('../assets/logo-transparent.png');
+
+function CelebrationToast({ message }: { message: string }) {
+  const opacity = useSharedValue(0);
+  const translateY = useSharedValue(20);
+  const scale = useSharedValue(0.8);
+
+  useEffect(() => {
+    const ease = Easing.out(Easing.back(1.5));
+    opacity.value = withSequence(
+      withTiming(1, { duration: 300, easing: ease }),
+      withDelay(1500, withTiming(0, { duration: 500, easing: Easing.in(Easing.ease) })),
+    );
+    translateY.value = withTiming(0, { duration: 300, easing: ease });
+    scale.value = withSequence(
+      withTiming(1.05, { duration: 300, easing: ease }),
+      withTiming(1, { duration: 200 }),
+    );
+  }, [opacity, translateY, scale]);
+
+  const animStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: translateY.value }, { scale: scale.value }],
+  }));
+
+  return (
+    <Animated.View
+      style={[
+        animStyle,
+        {
+          position: 'absolute',
+          top: '40%',
+          left: 24,
+          right: 24,
+          alignItems: 'center',
+          zIndex: 20,
+        },
+      ]}
+    >
+      <View style={{ position: 'relative', paddingRight: 5, paddingBottom: 5 }}>
+        <View
+          style={{
+            position: 'absolute',
+            top: 5,
+            left: 5,
+            right: 0,
+            bottom: 0,
+            backgroundColor: '#231208',
+            borderRadius: 24,
+          }}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#89A47C',
+            paddingVertical: 14,
+            paddingHorizontal: 24,
+            borderRadius: 24,
+            borderWidth: 3,
+            borderColor: '#231208',
+            gap: 10,
+          }}
+        >
+          <Image source={POT_IMAGE} style={{ width: 28, height: 28 }} resizeMode="contain" />
+          <Text
+            className="font-bodyBlack"
+            style={{ color: '#FFFBEF', fontSize: 18 }}
+          >
+            {message}
+          </Text>
+        </View>
+      </View>
+    </Animated.View>
+  );
+}
+
 export default function Home() {
   const router = useRouter();
   const onboardingDone = useAppStore((s) => s.onboardingDone);
   const jars = useJarStore((s) => s.jars);
   const jar = jars[0];
   const activeCount = useTaskStore((s) => (jar ? s.activeIn(jar.id).length : 0));
-  const streak = useAppStore((s) => s.streak.count);
 
-  const { draw, done, skip, drawnTask, isDrawing, jarRef } = useDrawTask(jar?.id ?? '');
+  const { draw, done, skip, drawnTask, isDrawing, jarRef, celebration } = useDrawTask(jar?.id ?? '');
 
   if (!onboardingDone) {
     return <Redirect href="/onboarding" />;
@@ -29,9 +114,11 @@ export default function Home() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
-      {/* Header — clean, breathing room */}
+      {/* Celebration toast */}
+      {celebration && <CelebrationToast message={celebration} />}
+
+      {/* Header */}
       <View style={{ paddingHorizontal: 24, paddingTop: 8, paddingBottom: 16 }}>
-        {/* Top row: kicker + nav icons */}
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <Text
             className="font-bodyBold"
@@ -50,7 +137,6 @@ export default function Home() {
           </View>
         </View>
 
-        {/* Title + streak inline */}
         <Text
           className="font-display"
           style={{
@@ -65,11 +151,10 @@ export default function Home() {
         </Text>
       </View>
 
-      {/* Main area — jar centered with generous space */}
+      {/* Main area */}
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 }}>
         <Jar ref={jarRef} taskCount={activeCount} />
 
-        {/* Task count caption */}
         {!drawnTask && (
           <View style={{ alignItems: 'center', marginTop: 12 }}>
             <Text
@@ -95,7 +180,7 @@ export default function Home() {
         )}
       </View>
 
-      {/* Bottom actions — hidden when task card showing */}
+      {/* Bottom actions */}
       {!drawnTask && (
         <View style={{ paddingHorizontal: 24, paddingBottom: 16, gap: 12 }}>
           <PrimaryButton onPress={() => router.push('/add-task')} variant="secondary">
