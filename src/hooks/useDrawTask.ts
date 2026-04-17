@@ -12,6 +12,7 @@ const MILESTONES = [5, 10, 25, 50, 100, 250, 500];
 
 export const useDrawTask = (jarId: string) => {
   const [drawnTask, setDrawnTask] = useState<Task | null>(null);
+  const [isAccepted, setIsAccepted] = useState(false);
   const [isDrawing, setIsDrawing] = useState(false);
   const [celebration, setCelebration] = useState<string | null>(null);
   const jarRef = useRef<JarHandle>(null);
@@ -19,15 +20,15 @@ export const useDrawTask = (jarId: string) => {
 
   // Restore drawn task from persisted lastDrawId on mount
   useEffect(() => {
-    const lastDrawId = useAppStore.getState().lastDrawId;
+    const { lastDrawId, lastDrawAccepted } = useAppStore.getState();
     if (!lastDrawId) return;
     const task = useTaskStore.getState().tasks.find(
       (t) => t.id === lastDrawId && t.status === 'active',
     );
     if (task) {
       setDrawnTask(task);
+      setIsAccepted(lastDrawAccepted);
     } else {
-      // Task was completed/deleted outside — clear stale reference
       useAppStore.getState().clearLastDraw();
     }
   }, []);
@@ -52,7 +53,6 @@ export const useDrawTask = (jarId: string) => {
 
     await jarRef.current?.shake();
 
-    // Fade out the sound smoothly over 1.5s
     soundService.fadeOut(1500);
 
     const prevStreakDate = useAppStore.getState().streak.lastDrawDate;
@@ -62,10 +62,17 @@ export const useDrawTask = (jarId: string) => {
     useAppStore.getState().registerDraw(picked.id);
     hapticsService.success();
     setDrawnTask(picked);
+    setIsAccepted(false);
     setIsDrawing(false);
 
-    // Show interstitial *after* the task card is visible
     adsService.maybeShowInterstitial(isFirstDrawToday);
+  };
+
+  const accept = () => {
+    if (!drawnTask) return;
+    useAppStore.getState().acceptDraw();
+    setIsAccepted(true);
+    hapticsService.light();
   };
 
   const done = () => {
@@ -73,9 +80,9 @@ export const useDrawTask = (jarId: string) => {
     useTaskStore.getState().markDone(drawnTask.id);
     useAppStore.getState().clearLastDraw();
     setDrawnTask(null);
+    setIsAccepted(false);
     hapticsService.success();
 
-    // Check for milestones
     const totalDone = useTaskStore.getState().tasks.filter((t) => t.status === 'done').length;
     const milestone = MILESTONES.find((m) => m === totalDone);
 
@@ -91,7 +98,8 @@ export const useDrawTask = (jarId: string) => {
     useTaskStore.getState().skip(drawnTask.id);
     useAppStore.getState().clearLastDraw();
     setDrawnTask(null);
+    setIsAccepted(false);
   };
 
-  return { draw, done, skip, drawnTask, isDrawing, jarRef, celebration };
+  return { draw, accept, done, skip, drawnTask, isAccepted, isDrawing, jarRef, celebration };
 };

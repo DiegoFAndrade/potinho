@@ -31,6 +31,7 @@ export interface AppState {
   hapticsEnabled: boolean;
   theme: string;
   lastDrawId: TaskId | null;
+  lastDrawAccepted: boolean;
   onboardingDone: boolean;
   drawsSinceLastInterstitial: number;
 }

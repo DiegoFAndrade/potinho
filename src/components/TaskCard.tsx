@@ -3,14 +3,80 @@ import { PrimaryButton } from './PrimaryButton';
 
 interface Props {
   text: string;
+  accepted: boolean;
+  onAccept: () => void;
   onDone: () => void;
   onSkip: () => void;
 }
 
-export function TaskCard({ text, onDone, onSkip }: Props) {
+export function TaskCard({ text, accepted, onAccept, onDone, onSkip }: Props) {
+  if (accepted) {
+    // "Doing" mode — compact banner with "Concluí!" button
+    return (
+      <View>
+        <View
+          style={{
+            position: 'absolute',
+            top: 5,
+            left: 5,
+            right: -5,
+            bottom: -5,
+            backgroundColor: '#231208',
+            borderRadius: 22,
+          }}
+        />
+        <View
+          style={{
+            backgroundColor: '#D9A520',
+            borderRadius: 22,
+            borderWidth: 3,
+            borderColor: '#231208',
+            padding: 18,
+          }}
+        >
+          <Text
+            className="font-bodyBold"
+            style={{
+              color: '#231208',
+              fontSize: 11,
+              letterSpacing: 2,
+              textTransform: 'uppercase',
+              marginBottom: 4,
+            }}
+          >
+            ✦ Fazendo agora
+          </Text>
+          <Text
+            className="font-display"
+            style={{
+              color: '#231208',
+              fontSize: 24,
+              lineHeight: 28,
+              marginBottom: 14,
+            }}
+          >
+            {text}
+          </Text>
+          <View style={{ flexDirection: 'row', gap: 10 }}>
+            <View style={{ flex: 1 }}>
+              <PrimaryButton onPress={onDone}>
+                Concluí! ✦
+              </PrimaryButton>
+            </View>
+            <View style={{ flex: 1 }}>
+              <PrimaryButton onPress={onSkip} variant="ghost">
+                Desistir
+              </PrimaryButton>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  // "Just drawn" mode — full card with "Fazer" / "Depois"
   return (
     <View>
-      {/* offset ink shadow card */}
       <View
         style={{
           position: 'absolute',
@@ -56,7 +122,7 @@ export function TaskCard({ text, onDone, onSkip }: Props) {
             marginBottom: 6,
           }}
         >
-          ✦ sua tarefa é
+          ✦ Sua tarefa é
         </Text>
 
         <Text
@@ -73,8 +139,8 @@ export function TaskCard({ text, onDone, onSkip }: Props) {
 
         <View style={{ flexDirection: 'row', gap: 10 }}>
           <View style={{ flex: 1 }}>
-            <PrimaryButton onPress={onDone} testID="task-card-done">
-              Feito!
+            <PrimaryButton onPress={onAccept} testID="task-card-accept">
+              Fazer
             </PrimaryButton>
           </View>
           <View style={{ flex: 1 }}>

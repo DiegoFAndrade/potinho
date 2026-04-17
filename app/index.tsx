@@ -104,7 +104,7 @@ export default function Home() {
   const jar = jars[0];
   const activeCount = useTaskStore((s) => (jar ? s.activeIn(jar.id).length : 0));
 
-  const { draw, done, skip, drawnTask, isDrawing, jarRef, celebration } = useDrawTask(jar?.id ?? '');
+  const { draw, accept, done, skip, drawnTask, isAccepted, isDrawing, jarRef, celebration } = useDrawTask(jar?.id ?? '');
 
   if (!onboardingDone) {
     return <Redirect href="/onboarding" />;
@@ -175,7 +175,13 @@ export default function Home() {
 
         {drawnTask && (
           <View style={{ marginTop: 24, width: '100%' }}>
-            <TaskCard text={drawnTask.text} onDone={done} onSkip={skip} />
+            <TaskCard
+              text={drawnTask.text}
+              accepted={isAccepted}
+              onAccept={accept}
+              onDone={done}
+              onSkip={skip}
+            />
           </View>
         )}
       </View>

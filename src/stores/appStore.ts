@@ -8,6 +8,7 @@ interface AppStoreActions {
   setPremium: (v: boolean) => void;
   finishOnboarding: () => void;
   registerDraw: (taskId: string, now?: Date) => void;
+  acceptDraw: () => void;
   clearLastDraw: () => void;
   resetInterstitialCounter: () => void;
   toggleSound: () => void;
@@ -23,6 +24,7 @@ const initialState: AppState = {
   hapticsEnabled: true,
   theme: 'default',
   lastDrawId: null,
+  lastDrawAccepted: false,
   onboardingDone: false,
   drawsSinceLastInterstitial: 0,
 };
@@ -41,7 +43,8 @@ export const useAppStore = create<AppState & AppStoreActions>()(
           drawsSinceLastInterstitial: get().drawsSinceLastInterstitial + 1,
         });
       },
-      clearLastDraw: () => set({ lastDrawId: null }),
+      acceptDraw: () => set({ lastDrawAccepted: true }),
+      clearLastDraw: () => set({ lastDrawId: null, lastDrawAccepted: false }),
       resetInterstitialCounter: () => set({ drawsSinceLastInterstitial: 0 }),
       toggleSound: () => set({ soundEnabled: !get().soundEnabled }),
       toggleHaptics: () => set({ hapticsEnabled: !get().hapticsEnabled }),
