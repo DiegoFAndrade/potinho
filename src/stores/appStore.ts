@@ -8,6 +8,7 @@ interface AppStoreActions {
   setPremium: (v: boolean) => void;
   finishOnboarding: () => void;
   registerDraw: (taskId: string, now?: Date) => void;
+  clearLastDraw: () => void;
   resetInterstitialCounter: () => void;
   toggleSound: () => void;
   toggleHaptics: () => void;
@@ -40,6 +41,7 @@ export const useAppStore = create<AppState & AppStoreActions>()(
           drawsSinceLastInterstitial: get().drawsSinceLastInterstitial + 1,
         });
       },
+      clearLastDraw: () => set({ lastDrawId: null }),
       resetInterstitialCounter: () => set({ drawsSinceLastInterstitial: 0 }),
       toggleSound: () => set({ soundEnabled: !get().soundEnabled }),
       toggleHaptics: () => set({ hapticsEnabled: !get().hapticsEnabled }),

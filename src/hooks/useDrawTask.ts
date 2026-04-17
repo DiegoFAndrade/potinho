@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import type { JarHandle } from '@/components/Jar';
 import { useTaskStore } from '@/stores/taskStore';
 import { useAppStore } from '@/stores/appStore';
@@ -16,6 +16,21 @@ export const useDrawTask = (jarId: string) => {
   const [celebration, setCelebration] = useState<string | null>(null);
   const jarRef = useRef<JarHandle>(null);
   const celebrationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Restore drawn task from persisted lastDrawId on mount
+  useEffect(() => {
+    const lastDrawId = useAppStore.getState().lastDrawId;
+    if (!lastDrawId) return;
+    const task = useTaskStore.getState().tasks.find(
+      (t) => t.id === lastDrawId && t.status === 'active',
+    );
+    if (task) {
+      setDrawnTask(task);
+    } else {
+      // Task was completed/deleted outside — clear stale reference
+      useAppStore.getState().clearLastDraw();
+    }
+  }, []);
 
   const showCelebration = useCallback((message: string) => {
     if (celebrationTimer.current) clearTimeout(celebrationTimer.current);
@@ -56,6 +71,7 @@ export const useDrawTask = (jarId: string) => {
   const done = () => {
     if (!drawnTask) return;
     useTaskStore.getState().markDone(drawnTask.id);
+    useAppStore.getState().clearLastDraw();
     setDrawnTask(null);
     hapticsService.success();
 
@@ -71,7 +87,9 @@ export const useDrawTask = (jarId: string) => {
   };
 
   const skip = () => {
-    if (drawnTask) useTaskStore.getState().skip(drawnTask.id);
+    if (!drawnTask) return;
+    useTaskStore.getState().skip(drawnTask.id);
+    useAppStore.getState().clearLastDraw();
     setDrawnTask(null);
   };
 
