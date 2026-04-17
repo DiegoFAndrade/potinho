@@ -16,7 +16,9 @@ import {
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { adsService } from '@/services/adsService';
 import { purchaseService } from '@/services/purchaseService';
+import { analyticsService, Events } from '@/services/analyticsService';
 import { useJarStore } from '@/stores/jarStore';
+import { useAppStore } from '@/stores/appStore';
 
 Sentry.init({
   dsn: process.env.EXPO_PUBLIC_SENTRY_DSN ?? '',
@@ -34,6 +36,9 @@ function RootLayout() {
   });
 
   useEffect(() => {
+    if (!useAppStore.getState().onboardingDone) {
+      analyticsService.track(Events.FIRST_SESSION);
+    }
     useJarStore.getState().ensureDefault();
     adsService.init().catch(() => {});
     purchaseService.init().catch(() => {});

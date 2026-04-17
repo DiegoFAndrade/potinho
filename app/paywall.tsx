@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { IconButton } from '@/components/IconButton';
 import { purchaseService } from '@/services/purchaseService';
+import { analyticsService, Events } from '@/services/analyticsService';
 
 const BENEFITS = [
   { icon: '🚫', label: 'Sem anúncios, nunca mais' },
@@ -22,6 +23,7 @@ export default function Paywall() {
   const [restoring, setRestoring] = useState(false);
 
   useEffect(() => {
+    analyticsService.track(Events.PAYWALL_OPENED, { source: 'direct' });
     purchaseService
       .getPremiumProduct()
       .then((p) => {
@@ -33,12 +35,15 @@ export default function Paywall() {
 
   const buy = async () => {
     setLoading(true);
+    analyticsService.track(Events.PURCHASE_ATTEMPTED);
     const res = await purchaseService.buyPremium();
     setLoading(false);
     if (res.ok) {
+      analyticsService.track(Events.PURCHASE_COMPLETED);
       Alert.alert('Premium ativado! 🎉', 'Obrigado pelo apoio.');
       router.back();
     } else if (res.error) {
+      analyticsService.track(Events.PURCHASE_FAILED, { error: res.error });
       Alert.alert('Compra não concluída', res.error);
     }
   };
@@ -48,6 +53,7 @@ export default function Paywall() {
     try {
       const restored = await purchaseService.restore();
       if (restored) {
+        analyticsService.track(Events.PURCHASE_RESTORED);
         Alert.alert('Compra restaurada!', 'Seu Premium foi reativado.');
         router.back();
       } else {

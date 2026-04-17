@@ -5,6 +5,7 @@ import { useAppStore } from '@/stores/appStore';
 import { hapticsService } from '@/services/hapticsService';
 import { soundService } from '@/services/soundService';
 import { adsService } from '@/services/adsService';
+import { analyticsService, Events } from '@/services/analyticsService';
 import { toDateKey } from '@/lib/streak';
 import type { Task } from '@/types';
 
@@ -47,6 +48,7 @@ export const useDrawTask = (jarId: string) => {
     const picked = useTaskStore.getState().draw(jarId);
     if (!picked) return;
 
+    analyticsService.track(Events.DRAW_STARTED);
     setIsDrawing(true);
     hapticsService.light();
     soundService.playShake();
@@ -70,6 +72,7 @@ export const useDrawTask = (jarId: string) => {
 
   const accept = () => {
     if (!drawnTask) return;
+    analyticsService.track(Events.DRAW_ACCEPTED);
     useAppStore.getState().acceptDraw();
     setIsAccepted(true);
     hapticsService.light();
@@ -83,10 +86,13 @@ export const useDrawTask = (jarId: string) => {
     setIsAccepted(false);
     hapticsService.success();
 
+    analyticsService.track(Events.TASK_COMPLETED);
+
     const totalDone = useTaskStore.getState().tasks.filter((t) => t.status === 'done').length;
     const milestone = MILESTONES.find((m) => m === totalDone);
 
     if (milestone) {
+      analyticsService.track(Events.MILESTONE_REACHED, { milestone });
       showCelebration(`${milestone} tarefas concluídas! 🏆`);
     } else {
       showCelebration('Feito! 🎉');
@@ -95,6 +101,7 @@ export const useDrawTask = (jarId: string) => {
 
   const skip = () => {
     if (!drawnTask) return;
+    analyticsService.track(Events.TASK_SKIPPED);
     useTaskStore.getState().skip(drawnTask.id);
     useAppStore.getState().clearLastDraw();
     setDrawnTask(null);

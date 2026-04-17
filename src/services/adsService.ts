@@ -4,6 +4,7 @@ import mobileAds, {
   AdEventType,
 } from 'react-native-google-mobile-ads';
 import { useAppStore } from '@/stores/appStore';
+import { analyticsService, Events } from '@/services/analyticsService';
 
 export interface InterstitialDecisionInput {
   isPremium: boolean;
@@ -50,6 +51,7 @@ export const adsService = {
       return;
     }
     if (interstitial?.loaded) {
+      analyticsService.track(Events.INTERSTITIAL_SHOWN);
       interstitial.show();
       useAppStore.getState().resetInterstitialCounter();
     }

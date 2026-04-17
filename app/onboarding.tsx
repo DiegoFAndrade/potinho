@@ -6,6 +6,7 @@ import { PrimaryButton } from '@/components/PrimaryButton';
 import { useAppStore } from '@/stores/appStore';
 import { useTaskStore } from '@/stores/taskStore';
 import { useJarStore } from '@/stores/jarStore';
+import { analyticsService, Events } from '@/services/analyticsService';
 
 const SLIDES = [
   {
@@ -43,6 +44,7 @@ export default function Onboarding() {
       const jarId = useJarStore.getState().jars[0].id;
       useTaskStore.getState().addTask(jarId, firstTask.trim());
     }
+    analyticsService.track(Events.ONBOARDING_COMPLETED);
     useAppStore.getState().finishOnboarding();
     router.replace('/');
   };

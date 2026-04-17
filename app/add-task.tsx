@@ -15,6 +15,7 @@ import { IconButton } from '@/components/IconButton';
 import { useJarStore } from '@/stores/jarStore';
 import { useTaskStore } from '@/stores/taskStore';
 import { useAppStore } from '@/stores/appStore';
+import { analyticsService, Events } from '@/services/analyticsService';
 
 export default function AddTask() {
   const router = useRouter();
@@ -46,6 +47,7 @@ export default function AddTask() {
     const trimmed = text.trim();
     if (!trimmed || !jarId) return;
     useTaskStore.getState().addTask(jarId, trimmed);
+    analyticsService.track(Events.TASK_ADDED, { taskCount: activeCount + 1 });
     setText('');
     showConfirmation();
     inputRef.current?.focus();
