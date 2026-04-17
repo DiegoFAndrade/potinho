@@ -83,13 +83,13 @@ export const Jar = forwardRef<JarHandle, Props>(({ taskCount }, ref) => {
     return new Promise<void>((resolve) => {
       resolveRef.current = resolve;
 
-      const t = 220; // ms per swing — matches ~4.5s sound
+      const t = 219; // ms per swing — 219 * 16 + 296 = ~3.8s
       const ease = Easing.inOut(Easing.ease);
 
       // Scale up then settle back (~3s total)
       scale.value = withSequence(
         withTiming(1.08, { duration: 250, easing: ease }),
-        withDelay(t * 16, withTiming(1, { duration: 300, easing: ease })),
+        withDelay(t * 16, withTiming(1, { duration: 296, easing: ease })),
       );
 
       // Shake: big → medium → small → settle (~2.8s)
@@ -120,7 +120,7 @@ export const Jar = forwardRef<JarHandle, Props>(({ taskCount }, ref) => {
       setTimeout(() => {
         resolveRef.current?.();
         resolveRef.current = null;
-      }, t * 16 + 300);
+      }, t * 16 + 296);
     });
   }, [rotation, scale]);
 

@@ -36,7 +36,7 @@ export const soundService = {
     const p = shakePlayer;
     if (!p) return;
     try {
-      const steps = 20;
+      const steps = 40;
       const stepMs = durationMs / steps;
       let currentStep = 0;
       fadeInterval = setInterval(() => {
