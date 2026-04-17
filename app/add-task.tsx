@@ -1,7 +1,15 @@
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSequence,
+  withTiming,
+  withDelay,
+  Easing,
+} from 'react-native-reanimated';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { IconButton } from '@/components/IconButton';
 import { useJarStore } from '@/stores/jarStore';
@@ -14,13 +22,34 @@ export default function AddTask() {
   const isPremium = useAppStore((s) => s.isPremium);
   const [text, setText] = useState('');
   const [jarId, setJarId] = useState(jars[0]?.id ?? '');
+  const [addedCount, setAddedCount] = useState(0);
+  const inputRef = useRef<TextInput>(null);
 
-  const submit = (andContinue: boolean) => {
+  // Confirmation animation
+  const confirmOpacity = useSharedValue(0);
+  const confirmTranslateY = useSharedValue(10);
+  const confirmStyle = useAnimatedStyle(() => ({
+    opacity: confirmOpacity.value,
+    transform: [{ translateY: confirmTranslateY.value }],
+  }));
+
+  const showConfirmation = useCallback(() => {
+    confirmTranslateY.value = 10;
+    confirmOpacity.value = withSequence(
+      withTiming(1, { duration: 200, easing: Easing.out(Easing.ease) }),
+      withDelay(1200, withTiming(0, { duration: 400, easing: Easing.in(Easing.ease) })),
+    );
+    confirmTranslateY.value = withTiming(0, { duration: 200, easing: Easing.out(Easing.ease) });
+  }, [confirmOpacity, confirmTranslateY]);
+
+  const submit = () => {
     const trimmed = text.trim();
     if (!trimmed || !jarId) return;
     useTaskStore.getState().addTask(jarId, trimmed);
     setText('');
-    if (!andContinue) router.back();
+    setAddedCount((c) => c + 1);
+    showConfirmation();
+    inputRef.current?.focus();
   };
 
   return (
@@ -89,6 +118,7 @@ export default function AddTask() {
             }}
           >
             <TextInput
+              ref={inputRef}
               value={text}
               onChangeText={setText}
               placeholder="O que está te travando?"
@@ -104,14 +134,61 @@ export default function AddTask() {
               multiline
             />
           </View>
+
+          {/* Confirmation toast */}
+          <Animated.View
+            style={[
+              confirmStyle,
+              {
+                alignItems: 'center',
+                marginTop: 16,
+              },
+            ]}
+          >
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#89A47C',
+                paddingVertical: 8,
+                paddingHorizontal: 16,
+                borderRadius: 999,
+                borderWidth: 2,
+                borderColor: '#231208',
+                gap: 6,
+              }}
+            >
+              <Text style={{ fontSize: 16 }}>🫙</Text>
+              <Text
+                className="font-bodyBold"
+                style={{ color: '#FFFBEF', fontSize: 14 }}
+              >
+                No potinho!
+              </Text>
+              {addedCount > 1 && (
+                <View
+                  style={{
+                    backgroundColor: '#FFFBEF',
+                    borderRadius: 10,
+                    paddingHorizontal: 7,
+                    paddingVertical: 1,
+                  }}
+                >
+                  <Text
+                    className="font-bodyBlack"
+                    style={{ color: '#89A47C', fontSize: 11 }}
+                  >
+                    {addedCount}
+                  </Text>
+                </View>
+              )}
+            </View>
+          </Animated.View>
         </View>
 
-        <View style={{ paddingHorizontal: 24, paddingBottom: 16, gap: 10 }}>
-          <PrimaryButton onPress={() => submit(false)} disabled={!text.trim()}>
+        <View style={{ paddingHorizontal: 24, paddingBottom: 16 }}>
+          <PrimaryButton onPress={submit} disabled={!text.trim()}>
             Adicionar
-          </PrimaryButton>
-          <PrimaryButton onPress={() => submit(true)} disabled={!text.trim()} variant="secondary">
-            + Outra
           </PrimaryButton>
         </View>
       </KeyboardAvoidingView>

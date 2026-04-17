@@ -90,11 +90,12 @@ export default function TasksScreen() {
     <View
       style={{
         backgroundColor: '#FFFBEF',
-        borderRadius: 16,
-        borderWidth: 2.5,
+        borderRadius: 14,
+        borderWidth: 2,
         borderColor: '#231208',
-        padding: 14,
-        marginBottom: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 14,
+        marginBottom: 8,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -102,12 +103,12 @@ export default function TasksScreen() {
     >
       <Text
         className="font-bodyMedium"
-        style={{ color: '#231208', flex: 1, fontSize: 16, lineHeight: 22 }}
+        style={{ color: '#231208', flex: 1, fontSize: 15, lineHeight: 20 }}
       >
         {item.text}
       </Text>
       <Pressable onPress={() => removeTask(item.id)} hitSlop={10} accessibilityLabel="Remover tarefa">
-        <Text style={{ color: '#B8321E', fontSize: 22, paddingHorizontal: 6 }}>✕</Text>
+        <Text style={{ color: '#B8321E', fontSize: 20, paddingHorizontal: 6 }}>✕</Text>
       </Pressable>
     </View>
   );
@@ -125,8 +126,8 @@ export default function TasksScreen() {
       }}
     >
       <Text
-        className="font-body"
-        style={{ color: '#4A2E1E', fontSize: 15, textDecorationLine: 'line-through' }}
+        className="font-bodyMedium"
+        style={{ color: '#4A2E1E', fontSize: 15, lineHeight: 20, textDecorationLine: 'line-through' }}
       >
         {item.text}
       </Text>
