@@ -1,11 +1,9 @@
 import type { ReactNode } from 'react';
-import { View, Text, Switch, Pressable, Linking } from 'react-native';
+import { View, Text, Switch, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { IconButton } from '@/components/IconButton';
 import { useAppStore } from '@/stores/appStore';
-
-const PRIVACY_URL = 'https://diegofernandes.github.io/potinho/privacy';
 
 export default function Settings() {
   const router = useRouter();
@@ -127,7 +125,7 @@ export default function Settings() {
         <Row
           label="Política de privacidade"
           right={<Text style={{ color: '#4A2E1E', fontSize: 20 }}>›</Text>}
-          onPress={() => Linking.openURL(PRIVACY_URL)}
+          onPress={() => router.push('/privacy')}
         />
 
         <View style={{ marginTop: 32, alignItems: 'center' }}>

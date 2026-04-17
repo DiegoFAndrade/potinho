@@ -68,6 +68,7 @@ function RootLayout() {
           <Stack.Screen name="settings" />
           <Stack.Screen name="paywall" options={{ presentation: 'modal' }} />
           <Stack.Screen name="stats" />
+          <Stack.Screen name="privacy" />
         </Stack>
       </GestureHandlerRootView>
     </ErrorBoundary>
