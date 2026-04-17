@@ -57,17 +57,13 @@ export function TaskCard({ text, accepted, onAccept, onDone, onSkip }: Props) {
           >
             {text}
           </Text>
-          <View style={{ flexDirection: 'row', gap: 10 }}>
-            <View style={{ flex: 1 }}>
-              <PrimaryButton onPress={onDone}>
-                Concluí! ✦
-              </PrimaryButton>
-            </View>
-            <View style={{ flex: 1 }}>
-              <PrimaryButton onPress={onSkip} variant="ghost">
-                Desistir
-              </PrimaryButton>
-            </View>
+          <View style={{ gap: 8 }}>
+            <PrimaryButton onPress={onDone} compact>
+              Concluir
+            </PrimaryButton>
+            <PrimaryButton onPress={onSkip} variant="secondary" compact>
+              Desistir
+            </PrimaryButton>
           </View>
         </View>
       </View>

@@ -6,6 +6,7 @@ interface Props {
   children: ReactNode;
   disabled?: boolean;
   variant?: 'primary' | 'secondary' | 'ghost';
+  compact?: boolean;
   testID?: string;
 }
 
@@ -19,6 +20,7 @@ export function PrimaryButton({
   children,
   disabled,
   variant = 'primary',
+  compact,
   testID,
 }: Props) {
   const fills = {
@@ -62,8 +64,8 @@ export function PrimaryButton({
               borderRadius: 22,
               borderWidth: 3,
               borderColor: '#231208',
-              paddingVertical: 16,
-              paddingHorizontal: 24,
+              paddingVertical: compact ? 12 : 16,
+              paddingHorizontal: compact ? 20 : 24,
               alignItems: 'center',
               justifyContent: 'center',
               transform: [
@@ -76,7 +78,7 @@ export function PrimaryButton({
               className="font-bodyBlack"
               style={{
                 color: textColors[variant],
-                fontSize: 18,
+                fontSize: compact ? 16 : 18,
                 letterSpacing: 0.3,
               }}
             >
