@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TextInput, Image, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, {
@@ -158,7 +158,11 @@ export default function AddTask() {
                 gap: 6,
               }}
             >
-              <Text style={{ fontSize: 16 }}>🫙</Text>
+              <Image
+                source={require('../assets/logo-transparent.png')}
+                style={{ width: 20, height: 20 }}
+                resizeMode="contain"
+              />
               <Text
                 className="font-bodyBold"
                 style={{ color: '#FFFBEF', fontSize: 14 }}

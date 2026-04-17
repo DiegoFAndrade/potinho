@@ -83,31 +83,44 @@ export const Jar = forwardRef<JarHandle, Props>(({ taskCount }, ref) => {
     return new Promise<void>((resolve) => {
       resolveRef.current = resolve;
 
-      const t = 80;
+      const t = 140; // ms per swing — slower, more dramatic
       const ease = Easing.inOut(Easing.ease);
 
+      // Scale up then settle back (~3s total)
       scale.value = withSequence(
-        withTiming(1.05, { duration: 150, easing: ease }),
-        withDelay(t * 10, withTiming(1, { duration: 200, easing: ease })),
+        withTiming(1.08, { duration: 250, easing: ease }),
+        withDelay(t * 16, withTiming(1, { duration: 300, easing: ease })),
       );
 
+      // Shake: big → medium → small → settle (~2.8s)
       rotation.value = withSequence(
-        withTiming(-8, { duration: t, easing: ease }),
-        withTiming(8, { duration: t, easing: ease }),
-        withTiming(-8, { duration: t, easing: ease }),
-        withTiming(8, { duration: t, easing: ease }),
-        withTiming(-6, { duration: t, easing: ease }),
-        withTiming(6, { duration: t, easing: ease }),
+        // Big shakes
+        withTiming(-10, { duration: t, easing: ease }),
+        withTiming(10, { duration: t, easing: ease }),
+        withTiming(-10, { duration: t, easing: ease }),
+        withTiming(10, { duration: t, easing: ease }),
+        // Medium shakes
+        withTiming(-7, { duration: t, easing: ease }),
+        withTiming(7, { duration: t, easing: ease }),
+        withTiming(-7, { duration: t, easing: ease }),
+        withTiming(7, { duration: t, easing: ease }),
+        // Small shakes
+        withTiming(-5, { duration: t, easing: ease }),
+        withTiming(5, { duration: t, easing: ease }),
         withTiming(-4, { duration: t, easing: ease }),
         withTiming(4, { duration: t, easing: ease }),
+        // Tiny settle
         withTiming(-2, { duration: t, easing: ease }),
+        withTiming(2, { duration: t, easing: ease }),
+        withTiming(-1, { duration: t, easing: ease }),
         withTiming(0, { duration: t, easing: ease }),
       );
 
+      // Resolve after full animation (~3s)
       setTimeout(() => {
         resolveRef.current?.();
         resolveRef.current = null;
-      }, t * 10 + 200);
+      }, t * 16 + 300);
     });
   }, [rotation, scale]);
 
