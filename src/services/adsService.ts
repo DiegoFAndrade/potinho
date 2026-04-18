@@ -20,8 +20,8 @@ export const shouldShowInterstitial = (i: InterstitialDecisionInput): boolean =>
   return i.drawsSinceLastInterstitial >= MIN_DRAWS_BETWEEN_INTERSTITIALS;
 };
 
-const INTERSTITIAL_ID = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-YOUR-REAL-ID/XXXX';
-export const BANNER_ID = __DEV__ ? TestIds.BANNER : 'ca-app-pub-YOUR-REAL-ID/YYYY';
+const INTERSTITIAL_ID = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-2826077560722110/5366553535';
+export const BANNER_ID = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2826077560722110/6679635201';
 
 let interstitial: InterstitialAd | null = null;
 
