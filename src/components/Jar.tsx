@@ -1,5 +1,6 @@
 import { useRef, useImperativeHandle, forwardRef, useCallback } from 'react';
 import { View, Text, Image } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -66,6 +67,7 @@ function PaperSlips({ count }: { count: number }) {
 }
 
 export const Jar = forwardRef<JarHandle, Props>(({ taskCount }, ref) => {
+  const { t } = useTranslation();
   const rotation = useSharedValue(0);
   const scale = useSharedValue(1);
   const resolveRef = useRef<(() => void) | null>(null);
@@ -127,7 +129,7 @@ export const Jar = forwardRef<JarHandle, Props>(({ taskCount }, ref) => {
   return (
     <View
       style={{ alignItems: 'center', justifyContent: 'center', position: 'relative' }}
-      accessibilityLabel={`Potinho com ${taskCount} tarefas`}
+      accessibilityLabel={t('jar.label', { count: taskCount })}
     >
       {/* decorative asterisks */}
       <Text
@@ -175,7 +177,7 @@ export const Jar = forwardRef<JarHandle, Props>(({ taskCount }, ref) => {
             style={{ width: 200, height: 200 }}
             resizeMode="contain"
             accessibilityRole="image"
-            accessibilityLabel="Potinho"
+            accessibilityLabel={t('jar.imageLabel')}
           />
         </View>
       </Animated.View>

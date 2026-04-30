@@ -1,4 +1,5 @@
 import { View, Text } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   count: number;
@@ -6,6 +7,7 @@ interface Props {
 
 /** Rotated sticker-style streak badge. */
 export function Streak({ count }: Props) {
+  const { t } = useTranslation();
   if (count === 0) return null;
   return (
     <View style={{ transform: [{ rotate: '-4deg' }] }}>
@@ -36,7 +38,7 @@ export function Streak({ count }: Props) {
           className="font-bodyBlack text-ink"
           style={{ marginLeft: 4, fontSize: 14 }}
         >
-          {count} {count === 1 ? 'dia' : 'dias'}
+          {t('streak.day', { count })}
         </Text>
       </View>
     </View>

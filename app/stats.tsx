@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { IconButton } from '@/components/IconButton';
 import { computeStats } from '@/lib/stats';
@@ -8,6 +9,7 @@ import { useAppStore } from '@/stores/appStore';
 import { useJarStore } from '@/stores/jarStore';
 
 export default function Stats() {
+  const { t } = useTranslation();
   const router = useRouter();
   const tasks = useTaskStore((s) => s.tasks);
   const jars = useJarStore((s) => s.jars);
@@ -71,13 +73,13 @@ export default function Stats() {
             className="font-bodyBold text-brand-dark"
             style={{ fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
           >
-            ✦ seu progresso
+            {t('stats.kicker')}
           </Text>
           <Text
             className="font-display text-ink"
             style={{ fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
           >
-            Stats
+            {t('stats.title')}
           </Text>
         </View>
         <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
@@ -85,12 +87,12 @@ export default function Stats() {
 
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 20 }}>
         <View style={{ flexDirection: 'row', marginBottom: 16 }}>
-          <Stat label="feitas" value={stats.totalDone} tint="bg-blush" />
-          <Stat label="ativas" value={stats.totalActive} tint="bg-surface-hi" />
+          <Stat label={t('stats.done')} value={stats.totalDone} tint="bg-blush" />
+          <Stat label={t('stats.active')} value={stats.totalActive} tint="bg-surface-hi" />
         </View>
         <View style={{ flexDirection: 'row', marginBottom: 24 }}>
-          <Stat label="streak" value={`${streak.count}🔥`} tint="bg-accent" />
-          <Stat label="taxa" value={`${Math.round(stats.completionRate * 100)}%`} tint="bg-sage" />
+          <Stat label={t('stats.streak')} value={`${streak.count}🔥`} tint="bg-accent" />
+          <Stat label={t('stats.rate')} value={`${Math.round(stats.completionRate * 100)}%`} tint="bg-sage" />
         </View>
 
         <Text
@@ -104,7 +106,7 @@ export default function Stats() {
             paddingHorizontal: 4,
           }}
         >
-          — por potinho
+          {t('stats.byJar')}
         </Text>
         {jars.map((j) => (
           <View

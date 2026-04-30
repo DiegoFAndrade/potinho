@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, Text, FlatList, Pressable, TextInput, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { IconButton } from '@/components/IconButton';
@@ -69,6 +70,7 @@ function TabButton({ label, count, selected, onPress }: { label: string; count: 
 }
 
 export default function TasksScreen() {
+  const { t } = useTranslation();
   const router = useRouter();
   const jars = useJarStore((s) => s.jars);
   const tasks = useTaskStore((s) => s.tasks);
@@ -92,9 +94,9 @@ export default function TasksScreen() {
   const hiddenCount = allCompleted.length - completed.length;
 
   const handleDelete = (id: string) => {
-    Alert.alert('Remover tarefa?', undefined, [
-      { text: 'Cancelar', style: 'cancel' },
-      { text: 'Remover', style: 'destructive', onPress: () => removeTask(id) },
+    Alert.alert(t('tasks.deleteTitle'), undefined, [
+      { text: t('tasks.deleteCancel'), style: 'cancel' },
+      { text: t('tasks.deleteConfirm'), style: 'destructive', onPress: () => removeTask(id) },
     ]);
   };
 
@@ -150,13 +152,13 @@ export default function TasksScreen() {
               onSubmitEditing={handleEditSave}
             />
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginLeft: 8 }}>
-              <Pressable onPress={handleEditSave} hitSlop={10} accessibilityLabel="Salvar edição">
+              <Pressable onPress={handleEditSave} hitSlop={10} accessibilityLabel={t('tasks.saveEdit')}>
                 <Feather name="check" size={20} color="#89A47C" />
               </Pressable>
-              <Pressable onPress={handleEditCancel} hitSlop={10} accessibilityLabel="Cancelar edição">
+              <Pressable onPress={handleEditCancel} hitSlop={10} accessibilityLabel={t('tasks.cancelEdit')}>
                 <Feather name="x" size={20} color="#4A2E1E" />
               </Pressable>
-              <Pressable onPress={() => { handleEditCancel(); handleDelete(item.id); }} hitSlop={10} accessibilityLabel="Remover tarefa">
+              <Pressable onPress={() => { handleEditCancel(); handleDelete(item.id); }} hitSlop={10} accessibilityLabel={t('tasks.removeTask')}>
                 <Feather name="trash-2" size={18} color="#B8321E" />
               </Pressable>
             </View>
@@ -170,10 +172,10 @@ export default function TasksScreen() {
               {item.text}
             </Text>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginLeft: 8 }}>
-              <Pressable onPress={() => handleEditStart(item)} hitSlop={10} accessibilityLabel="Editar tarefa">
+              <Pressable onPress={() => handleEditStart(item)} hitSlop={10} accessibilityLabel={t('tasks.editTask')}>
                 <Feather name="edit-2" size={17} color="#4A2E1E" />
               </Pressable>
-              <Pressable onPress={() => handleDelete(item.id)} hitSlop={10} accessibilityLabel="Remover tarefa">
+              <Pressable onPress={() => handleDelete(item.id)} hitSlop={10} accessibilityLabel={t('tasks.removeTask')}>
                 <Feather name="trash-2" size={17} color="#B8321E" />
               </Pressable>
             </View>
@@ -220,13 +222,13 @@ export default function TasksScreen() {
             className="font-bodyBold text-brand-dark"
             style={{ fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
           >
-            ✦ suas coisas
+            {t('tasks.kicker')}
           </Text>
           <Text
             className="font-display text-ink"
             style={{ fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
           >
-            Tarefas
+            {t('tasks.title')}
           </Text>
         </View>
         <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
@@ -235,13 +237,13 @@ export default function TasksScreen() {
       {/* Tabs */}
       <View style={{ flexDirection: 'row', paddingHorizontal: 24, paddingTop: 16, paddingBottom: 12, gap: 10 }}>
         <TabButton
-          label="No potinho"
+          label={t('tasks.tabActive')}
           count={active.length}
           selected={tab === 'active'}
           onPress={() => setTab('active')}
         />
         <TabButton
-          label="Feitas"
+          label={t('tasks.tabDone')}
           count={completed.length}
           selected={tab === 'done'}
           onPress={() => setTab('done')}
@@ -260,7 +262,7 @@ export default function TasksScreen() {
                 className="font-body text-ink-soft"
                 style={{ fontStyle: 'italic', textAlign: 'center', marginTop: 40 }}
               >
-                Nada ainda. Joga algo aí.
+                {t('tasks.emptyActive')}
               </Text>
             }
           />
@@ -277,7 +279,7 @@ export default function TasksScreen() {
                   textAlign: 'center',
                 }}
               >
-                Últimos 7 dias — Premium libera tudo
+                {t('tasks.last7days')}
               </Text>
             )}
             <FlatList
@@ -289,7 +291,7 @@ export default function TasksScreen() {
                   className="font-body text-ink-soft"
                   style={{ fontStyle: 'italic', textAlign: 'center', marginTop: 40 }}
                 >
-                  Suas tarefas concluídas aparecem aqui.
+                  {t('tasks.emptyDone')}
                 </Text>
               }
               ListFooterComponent={
@@ -308,8 +310,8 @@ export default function TasksScreen() {
                       className="font-bodyMedium text-surface-hi"
                       style={{ fontSize: 14, textAlign: 'center', marginBottom: 10 }}
                     >
-                      Você tem mais {hiddenCount} {hiddenCount === 1 ? 'tarefa concluída' : 'tarefas concluídas'}.
-                      {'\n'}Premium desbloqueia o histórico completo.
+                      {t('tasks.hiddenCount', { count: hiddenCount })}
+                      {'\n'}{t('tasks.hiddenUpsell')}
                     </Text>
                     <Pressable
                       onPress={() => router.push('/paywall')}
@@ -322,7 +324,7 @@ export default function TasksScreen() {
                       }}
                     >
                       <Text className="font-bodyBold text-ink" style={{ fontSize: 14 }}>
-                        Ver mais →
+                        {t('tasks.seeMore')}
                       </Text>
                     </Pressable>
                   </View>

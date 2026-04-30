@@ -8,6 +8,7 @@ import { adsService } from '@/services/adsService';
 import { analyticsService, Events } from '@/services/analyticsService';
 import { toDateKey } from '@/lib/streak';
 import type { Task } from '@/types';
+import i18n from '@/locales';
 
 const MILESTONES = [5, 10, 25, 50, 100, 250, 500];
 
@@ -93,9 +94,9 @@ export const useDrawTask = (jarId: string) => {
 
     if (milestone) {
       analyticsService.track(Events.MILESTONE_REACHED, { milestone });
-      showCelebration(`${milestone} tarefas concluídas! 🏆`);
+      showCelebration(i18n.t('home.milestone', { count: milestone }));
     } else {
-      showCelebration('Feito! 🎉');
+      showCelebration(i18n.t('home.done'));
     }
   };
 

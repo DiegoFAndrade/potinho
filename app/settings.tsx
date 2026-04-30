@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react';
 import { View, Text, Switch, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { IconButton } from '@/components/IconButton';
 import { useAppStore } from '@/stores/appStore';
 
 export default function Settings() {
+  const { t } = useTranslation();
   const router = useRouter();
   const soundEnabled = useAppStore((s) => s.soundEnabled);
   const hapticsEnabled = useAppStore((s) => s.hapticsEnabled);
@@ -60,13 +62,13 @@ export default function Settings() {
             className="font-bodyBold text-brand-dark"
             style={{ fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
           >
-            ✦ ajustes
+            {t('settings.kicker')}
           </Text>
           <Text
             className="font-display text-ink"
             style={{ fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
           >
-            Configurações
+            {t('settings.title')}
           </Text>
         </View>
         <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
@@ -74,33 +76,33 @@ export default function Settings() {
 
       <View style={{ paddingHorizontal: 24, paddingTop: 24 }}>
         <Row
-          label="Som do sorteio"
+          label={t('settings.sound')}
           right={
             <Switch
               value={soundEnabled}
               onValueChange={toggleSound}
               trackColor={{ true: '#89A47C', false: '#E8D5B7' }}
               thumbColor="#FFFBEF"
-              accessibilityLabel={soundEnabled ? 'Som ativado' : 'Som desativado'}
+              accessibilityLabel={soundEnabled ? t('settings.soundOn') : t('settings.soundOff')}
             />
           }
         />
         <Row
-          label="Vibração"
+          label={t('settings.vibration')}
           right={
             <Switch
               value={hapticsEnabled}
               onValueChange={toggleHaptics}
               trackColor={{ true: '#89A47C', false: '#E8D5B7' }}
               thumbColor="#FFFBEF"
-              accessibilityLabel={hapticsEnabled ? 'Vibração ativada' : 'Vibração desativada'}
+              accessibilityLabel={hapticsEnabled ? t('settings.vibrationOn') : t('settings.vibrationOff')}
             />
           }
         />
 
         {!isPremium && (
           <Row
-            label="✦ Virar premium"
+            label={t('settings.premium')}
             right={
               <Text
                 className="font-bodyBlack text-brand"
@@ -115,14 +117,14 @@ export default function Settings() {
 
         {isPremium && (
           <Row
-            label="📊 Estatísticas"
+            label={t('settings.stats')}
             right={<Text className="text-ink-soft" style={{ fontSize: 20 }}>›</Text>}
             onPress={() => router.push('/stats')}
           />
         )}
 
         <Row
-          label="Política de privacidade"
+          label={t('settings.privacy')}
           right={<Text className="text-ink-soft" style={{ fontSize: 20 }}>›</Text>}
           onPress={() => router.push('/privacy')}
         />
@@ -132,7 +134,7 @@ export default function Settings() {
             className="font-bodyBold text-muted"
             style={{ fontSize: 11, letterSpacing: 2, textTransform: 'uppercase' }}
           >
-            potinho v1.0 ✦ feito com carinho
+            {t('settings.version')}
           </Text>
         </View>
       </View>

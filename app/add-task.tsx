@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from 'react';
 import { View, Text, TextInput, Image, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, {
   useSharedValue,
@@ -18,6 +19,7 @@ import { useAppStore } from '@/stores/appStore';
 import { analyticsService, Events } from '@/services/analyticsService';
 
 export default function AddTask() {
+  const { t } = useTranslation();
   const router = useRouter();
   const jars = useJarStore((s) => s.jars);
   const isPremium = useAppStore((s) => s.isPremium);
@@ -66,13 +68,13 @@ export default function AddTask() {
               className="font-bodyBold text-brand-dark"
               style={{ fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
             >
-              ✦ nova anotação
+              {t('addTask.kicker')}
             </Text>
             <Text
               className="font-display text-ink"
               style={{ fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
             >
-              Joga no potinho
+              {t('addTask.title')}
             </Text>
           </View>
           <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
@@ -120,9 +122,9 @@ export default function AddTask() {
               ref={inputRef}
               value={text}
               onChangeText={setText}
-              placeholder="O que está te travando?"
+              placeholder={t('addTask.placeholder')}
               placeholderTextColor="#8A7868"
-              accessibilityLabel="Texto da tarefa"
+              accessibilityLabel={t('addTask.inputLabel')}
               style={{
                 fontFamily: 'Fraunces_500Medium',
                 color: '#231208',
@@ -167,7 +169,7 @@ export default function AddTask() {
                 className="font-bodyBold text-surface-hi"
                 style={{ fontSize: 14 }}
               >
-                No potinho!
+                {t('addTask.confirmation')}
               </Text>
               <View
                 className="bg-surface-hi"
@@ -190,7 +192,7 @@ export default function AddTask() {
 
         <View style={{ paddingHorizontal: 24, paddingBottom: 16 }}>
           <PrimaryButton onPress={submit} disabled={!text.trim()}>
-            Adicionar
+            {t('addTask.submit')}
           </PrimaryButton>
         </View>
       </KeyboardAvoidingView>

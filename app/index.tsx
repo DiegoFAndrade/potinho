@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { View, Text, Image } from 'react-native';
 import { Redirect, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, {
   useSharedValue,
@@ -99,6 +100,7 @@ function CelebrationToast({ message }: { message: string }) {
 }
 
 export default function Home() {
+  const { t } = useTranslation();
   const router = useRouter();
   const onboardingDone = useAppStore((s) => s.onboardingDone);
   const jars = useJarStore((s) => s.jars);
@@ -129,7 +131,7 @@ export default function Home() {
               textTransform: 'uppercase',
             }}
           >
-            ✦ {jar.name}
+            {t('home.jarName', { name: jar.name })}
           </Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
             <IconButton icon="list" onPress={() => router.push('/tasks')} label="Lista de tarefas" />
@@ -146,13 +148,13 @@ export default function Home() {
             marginTop: 2,
           }}
         >
-          Potinho
+          {t('home.title')}
         </Text>
       </View>
 
       {/* Main area */}
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 }}>
-        <View accessibilityLabel={`Potinho com ${activeCount} tarefas`}>
+        <View>
           <Jar ref={jarRef} taskCount={activeCount} />
         </View>
 
@@ -167,8 +169,8 @@ export default function Home() {
               }}
             >
               {activeCount === 0
-                ? '— Vazio, adicione algo —'
-                : `— ${activeCount} ${activeCount === 1 ? 'coisa' : 'coisas'} pra fazer —`}
+                ? t('home.empty')
+                : t('home.taskCount', { count: activeCount })}
             </Text>
           </View>
         )}
@@ -190,14 +192,14 @@ export default function Home() {
       {!drawnTask && (
         <View style={{ paddingHorizontal: 24, paddingBottom: 16, gap: 12 }}>
           <PrimaryButton onPress={() => router.push('/add-task')} variant="secondary">
-            + Criar tarefa
+            {t('home.addTask')}
           </PrimaryButton>
           <PrimaryButton
             onPress={draw}
             disabled={activeCount === 0 || isDrawing}
             testID="draw-button"
           >
-            {isDrawing ? '...' : 'SORTEAR ✦'}
+            {isDrawing ? t('home.drawing') : t('home.draw')}
           </PrimaryButton>
         </View>
       )}

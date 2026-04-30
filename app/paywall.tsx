@@ -1,21 +1,15 @@
 import { useEffect, useState } from 'react';
 import { View, Text, Pressable, Alert, Image } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { IconButton } from '@/components/IconButton';
 import { purchaseService } from '@/services/purchaseService';
 import { analyticsService, Events } from '@/services/analyticsService';
 
-const BENEFITS = [
-  { icon: '🚫', label: 'Sem anúncios, nunca mais' },
-  { icon: '🫙', label: 'Potinhos ilimitados' },
-  { icon: '🎨', label: 'Temas visuais extras' },
-  { icon: '📊', label: 'Estatísticas detalhadas' },
-  { icon: '📅', label: 'Histórico sem limite' },
-];
-
 export default function Paywall() {
+  const { t } = useTranslation();
   const router = useRouter();
   const [price, setPrice] = useState<string>('R$ 6,90');
   const [available, setAvailable] = useState(true);
@@ -33,6 +27,14 @@ export default function Paywall() {
       .catch(() => setAvailable(false));
   }, []);
 
+  const benefits = [
+    { icon: '🚫', label: t('paywall.benefit1') },
+    { icon: '🫙', label: t('paywall.benefit2') },
+    { icon: '🎨', label: t('paywall.benefit3') },
+    { icon: '📊', label: t('paywall.benefit4') },
+    { icon: '📅', label: t('paywall.benefit5') },
+  ];
+
   const buy = async () => {
     setLoading(true);
     analyticsService.track(Events.PURCHASE_ATTEMPTED);
@@ -40,11 +42,11 @@ export default function Paywall() {
     setLoading(false);
     if (res.ok) {
       analyticsService.track(Events.PURCHASE_COMPLETED);
-      Alert.alert('Premium ativado! 🎉', 'Obrigado pelo apoio.');
+      Alert.alert(t('paywall.successTitle'), t('paywall.successMessage'));
       router.back();
     } else if (res.error) {
       analyticsService.track(Events.PURCHASE_FAILED, { error: res.error });
-      Alert.alert('Compra não concluída', res.error);
+      Alert.alert(t('paywall.failTitle'), res.error);
     }
   };
 
@@ -54,13 +56,13 @@ export default function Paywall() {
       const restored = await purchaseService.restore();
       if (restored) {
         analyticsService.track(Events.PURCHASE_RESTORED);
-        Alert.alert('Compra restaurada!', 'Seu Premium foi reativado.');
+        Alert.alert(t('paywall.restoreSuccess'), t('paywall.restoreSuccessMessage'));
         router.back();
       } else {
-        Alert.alert('Nenhuma compra encontrada', 'Não encontramos uma compra anterior vinculada a esta conta.');
+        Alert.alert(t('paywall.restoreNotFound'), t('paywall.restoreNotFoundMessage'));
       }
     } catch {
-      Alert.alert('Erro', 'Não foi possível restaurar. Tente novamente.');
+      Alert.alert(t('paywall.restoreError'), t('paywall.restoreErrorMessage'));
     } finally {
       setRestoring(false);
     }
@@ -88,7 +90,7 @@ export default function Paywall() {
               marginBottom: 8,
             }}
           >
-            ✦ potinho premium ✦
+            {t('paywall.kicker')}
           </Text>
           <Text
             className="font-display text-ink"
@@ -100,13 +102,13 @@ export default function Paywall() {
               marginBottom: 6,
             }}
           >
-            Desbloqueia{'\n'}tudo.
+            {t('paywall.title')}
           </Text>
           <Text
             className="font-bodySemi text-ink-soft"
             style={{ fontSize: 17, textAlign: 'center', marginBottom: 28 }}
           >
-            Seu potinho merece mais.
+            {t('paywall.subtitle')}
           </Text>
         </View>
 
@@ -119,13 +121,13 @@ export default function Paywall() {
             marginBottom: 8,
           }}
         >
-          {BENEFITS.map((b, i) => (
+          {benefits.map((b, i) => (
             <View
               key={b.label}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginBottom: i === BENEFITS.length - 1 ? 0 : 14,
+                marginBottom: i === benefits.length - 1 ? 0 : 14,
               }}
             >
               <Text style={{ fontSize: 22, marginRight: 14 }}>{b.icon}</Text>
@@ -140,14 +142,14 @@ export default function Paywall() {
       <View style={{ paddingHorizontal: 24, paddingBottom: 24, gap: 10 }}>
         {available ? (
           <>
-            <PrimaryButton onPress={buy} disabled={loading} accessibilityHint="Compra única de R$ 6,90">
-              {loading ? '...' : `Comprar por ${price}`}
+            <PrimaryButton onPress={buy} disabled={loading} accessibilityHint={t('paywall.purchaseHint')}>
+              {loading ? t('paywall.buying') : t('paywall.buyFor', { price })}
             </PrimaryButton>
             <Text
               className="font-body text-muted"
               style={{ fontSize: 12, textAlign: 'center' }}
             >
-              compra única — sem assinatura
+              {t('paywall.oneTime')}
             </Text>
           </>
         ) : (
@@ -155,17 +157,17 @@ export default function Paywall() {
             className="font-body text-ink-soft"
             style={{ textAlign: 'center', fontStyle: 'italic' }}
           >
-            compras indisponíveis neste dispositivo
+            {t('paywall.unavailable')}
           </Text>
         )}
         <Pressable onPress={() => router.back()} style={{ paddingVertical: 10, alignItems: 'center' }}>
           <Text className="font-bodyMedium text-ink-soft" style={{ fontSize: 14 }}>
-            Agora não
+            {t('paywall.notNow')}
           </Text>
         </Pressable>
         <Pressable onPress={restore} disabled={restoring} accessibilityRole="button" accessibilityHint="Restaura compra anterior" style={{ paddingVertical: 6, alignItems: 'center' }}>
           <Text className="font-body text-muted" style={{ fontSize: 13, textDecorationLine: 'underline' }}>
-            {restoring ? 'Restaurando...' : 'Restaurar compra'}
+            {restoring ? t('paywall.restoring') : t('paywall.restore')}
           </Text>
         </Pressable>
       </View>

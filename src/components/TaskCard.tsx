@@ -1,4 +1,5 @@
 import { View, Text } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { PrimaryButton } from './PrimaryButton';
 
 interface Props {
@@ -10,10 +11,11 @@ interface Props {
 }
 
 export function TaskCard({ text, accepted, onAccept, onDone, onSkip }: Props) {
+  const { t } = useTranslation();
   if (accepted) {
     // "Doing" mode — compact banner with "Concluí!" button
     return (
-      <View accessibilityLabel={`Tarefa em andamento: ${text}`}>
+      <View accessibilityLabel={t('taskCard.doingLabel', { text })}>
         <View
           className="bg-ink"
           style={{
@@ -41,7 +43,7 @@ export function TaskCard({ text, accepted, onAccept, onDone, onSkip }: Props) {
               marginBottom: 4,
             }}
           >
-            ✦ Fazendo agora
+            {t('taskCard.doingNow')}
           </Text>
           <Text
             className="font-display text-ink"
@@ -55,10 +57,10 @@ export function TaskCard({ text, accepted, onAccept, onDone, onSkip }: Props) {
           </Text>
           <View style={{ gap: 8 }}>
             <PrimaryButton onPress={onDone} compact>
-              Concluir
+              {t('taskCard.finish')}
             </PrimaryButton>
             <PrimaryButton onPress={onSkip} variant="secondary" compact>
-              Desistir
+              {t('taskCard.giveUp')}
             </PrimaryButton>
           </View>
         </View>
@@ -68,7 +70,7 @@ export function TaskCard({ text, accepted, onAccept, onDone, onSkip }: Props) {
 
   // "Just drawn" mode — full card with "Fazer" / "Depois"
   return (
-    <View accessibilityLabel={`Sua tarefa é: ${text}`}>
+    <View accessibilityLabel={t('taskCard.drawnLabel', { text })}>
       <View
         className="bg-ink"
         style={{
@@ -109,7 +111,7 @@ export function TaskCard({ text, accepted, onAccept, onDone, onSkip }: Props) {
             marginBottom: 6,
           }}
         >
-          ✦ Sua tarefa é
+          {t('taskCard.yourTask')}
         </Text>
 
         <Text
@@ -126,12 +128,12 @@ export function TaskCard({ text, accepted, onAccept, onDone, onSkip }: Props) {
         <View style={{ flexDirection: 'row', gap: 10 }}>
           <View style={{ flex: 1 }}>
             <PrimaryButton onPress={onAccept} testID="task-card-accept">
-              Fazer
+              {t('taskCard.doIt')}
             </PrimaryButton>
           </View>
           <View style={{ flex: 1 }}>
             <PrimaryButton onPress={onSkip} variant="secondary" testID="task-card-skip">
-              Depois
+              {t('taskCard.later')}
             </PrimaryButton>
           </View>
         </View>
