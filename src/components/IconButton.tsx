@@ -17,24 +17,23 @@ export function IconButton({ icon, onPress, label, size = 48 }: Props) {
     <Pressable onPress={onPress} accessibilityLabel={label} accessibilityRole="button" hitSlop={10}>
       <View style={{ position: 'relative', paddingRight: shadow, paddingBottom: shadow }}>
         <View
+          className="bg-ink"
           style={{
             position: 'absolute',
             top: shadow,
             left: shadow,
             right: 0,
             bottom: 0,
-            backgroundColor: '#231208',
             borderRadius: radius,
           }}
         />
         <View
+          className="bg-surface-hi border-ink"
           style={{
             width: size,
             height: size,
             borderRadius: radius,
-            backgroundColor: '#FFFBEF',
             borderWidth: 2.5,
-            borderColor: '#231208',
             alignItems: 'center',
             justifyContent: 'center',
           }}
