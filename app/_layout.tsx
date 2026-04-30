@@ -26,6 +26,7 @@ Sentry.init({
 });
 
 function RootLayout() {
+  const theme = useAppStore((s) => s.theme);
   const [fontsLoaded] = useFonts({
     Caprasimo_400Regular,
     Fraunces_400Regular,
@@ -48,17 +49,19 @@ function RootLayout() {
   }, []);
 
   if (!fontsLoaded) {
-    return <View style={{ flex: 1, backgroundColor: '#F8EFD9' }} />;
+    return <View className="flex-1 bg-surface" />;
   }
+
+  const themeClass = theme !== 'default' ? `theme-${theme}` : '';
 
   return (
     <ErrorBoundary>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <StatusBar style="dark" />
+      <GestureHandlerRootView className={`flex-1 ${themeClass}`}>
+        <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
         <Stack
           screenOptions={{
             headerShown: false,
-            contentStyle: { backgroundColor: '#F8EFD9' },
+            contentStyle: { backgroundColor: 'transparent' },
           }}
         >
           <Stack.Screen name="index" />
