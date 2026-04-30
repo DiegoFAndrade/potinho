@@ -67,7 +67,7 @@ export default function Paywall() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
+    <SafeAreaView className="flex-1 bg-surface">
       <View style={{ paddingHorizontal: 24, paddingTop: 16, alignItems: 'flex-end' }}>
         <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
       </View>
@@ -80,9 +80,8 @@ export default function Paywall() {
             resizeMode="contain"
           />
           <Text
-            className="font-bodyBold"
+            className="font-bodyBold text-brand-dark"
             style={{
-              color: '#B8321E',
               fontSize: 12,
               letterSpacing: 3,
               textTransform: 'uppercase',
@@ -92,9 +91,8 @@ export default function Paywall() {
             ✦ potinho premium ✦
           </Text>
           <Text
-            className="font-display"
+            className="font-display text-ink"
             style={{
-              color: '#231208',
               fontSize: 52,
               lineHeight: 56,
               letterSpacing: -1.5,
@@ -105,19 +103,18 @@ export default function Paywall() {
             Desbloqueia{'\n'}tudo.
           </Text>
           <Text
-            className="font-bodySemi"
-            style={{ color: '#4A2E1E', fontSize: 17, textAlign: 'center', marginBottom: 28 }}
+            className="font-bodySemi text-ink-soft"
+            style={{ fontSize: 17, textAlign: 'center', marginBottom: 28 }}
           >
             Seu potinho merece mais.
           </Text>
         </View>
 
         <View
+          className="bg-surface-hi border-ink"
           style={{
-            backgroundColor: '#FFFBEF',
             borderRadius: 24,
             borderWidth: 3,
-            borderColor: '#231208',
             padding: 24,
             marginBottom: 8,
           }}
@@ -132,7 +129,7 @@ export default function Paywall() {
               }}
             >
               <Text style={{ fontSize: 22, marginRight: 14 }}>{b.icon}</Text>
-              <Text className="font-bodyMedium" style={{ color: '#231208', fontSize: 16, flex: 1 }}>
+              <Text className="font-bodyMedium text-ink" style={{ fontSize: 16, flex: 1 }}>
                 {b.label}
               </Text>
             </View>
@@ -147,27 +144,27 @@ export default function Paywall() {
               {loading ? '...' : `Comprar por ${price}`}
             </PrimaryButton>
             <Text
-              className="font-body"
-              style={{ color: '#8A7868', fontSize: 12, textAlign: 'center' }}
+              className="font-body text-muted"
+              style={{ fontSize: 12, textAlign: 'center' }}
             >
               compra única — sem assinatura
             </Text>
           </>
         ) : (
           <Text
-            className="font-body"
-            style={{ color: '#4A2E1E', textAlign: 'center', fontStyle: 'italic' }}
+            className="font-body text-ink-soft"
+            style={{ textAlign: 'center', fontStyle: 'italic' }}
           >
             compras indisponíveis neste dispositivo
           </Text>
         )}
         <Pressable onPress={() => router.back()} style={{ paddingVertical: 10, alignItems: 'center' }}>
-          <Text className="font-bodyMedium" style={{ color: '#4A2E1E', fontSize: 14 }}>
+          <Text className="font-bodyMedium text-ink-soft" style={{ fontSize: 14 }}>
             Agora não
           </Text>
         </Pressable>
         <Pressable onPress={restore} disabled={restoring} accessibilityRole="button" accessibilityHint="Restaura compra anterior" style={{ paddingVertical: 6, alignItems: 'center' }}>
-          <Text className="font-body" style={{ color: '#8A7868', fontSize: 13, textDecorationLine: 'underline' }}>
+          <Text className="font-body text-muted" style={{ fontSize: 13, textDecorationLine: 'underline' }}>
             {restoring ? 'Restaurando...' : 'Restaurar compra'}
           </Text>
         </Pressable>

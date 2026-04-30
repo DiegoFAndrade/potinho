@@ -25,20 +25,19 @@ export default function Settings() {
     <Pressable
       onPress={onPress}
       accessibilityRole={onPress ? 'button' : undefined}
+      className="bg-surface-hi border-ink"
       style={{
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 18,
         paddingVertical: 16,
-        backgroundColor: '#FFFBEF',
         borderRadius: 18,
         borderWidth: 2.5,
-        borderColor: '#231208',
         marginBottom: 10,
       }}
     >
-      <Text className="font-bodyBold" style={{ color: '#231208', fontSize: 16 }}>
+      <Text className="font-bodyBold text-ink" style={{ fontSize: 16 }}>
         {label}
       </Text>
       {right}
@@ -46,7 +45,7 @@ export default function Settings() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
+    <SafeAreaView className="flex-1 bg-surface">
       <View
         style={{
           paddingHorizontal: 24,
@@ -58,14 +57,14 @@ export default function Settings() {
       >
         <View>
           <Text
-            className="font-bodyBold"
-            style={{ color: '#B8321E', fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
+            className="font-bodyBold text-brand-dark"
+            style={{ fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
           >
             ✦ ajustes
           </Text>
           <Text
-            className="font-display"
-            style={{ color: '#231208', fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
+            className="font-display text-ink"
+            style={{ fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
           >
             Configurações
           </Text>
@@ -104,8 +103,8 @@ export default function Settings() {
             label="✦ Virar premium"
             right={
               <Text
-                className="font-bodyBlack"
-                style={{ color: '#E8503D', fontSize: 14, letterSpacing: 1 }}
+                className="font-bodyBlack text-brand"
+                style={{ fontSize: 14, letterSpacing: 1 }}
               >
                 R$ 6,90 →
               </Text>
@@ -117,21 +116,21 @@ export default function Settings() {
         {isPremium && (
           <Row
             label="📊 Estatísticas"
-            right={<Text style={{ color: '#4A2E1E', fontSize: 20 }}>›</Text>}
+            right={<Text className="text-ink-soft" style={{ fontSize: 20 }}>›</Text>}
             onPress={() => router.push('/stats')}
           />
         )}
 
         <Row
           label="Política de privacidade"
-          right={<Text style={{ color: '#4A2E1E', fontSize: 20 }}>›</Text>}
+          right={<Text className="text-ink-soft" style={{ fontSize: 20 }}>›</Text>}
           onPress={() => router.push('/privacy')}
         />
 
         <View style={{ marginTop: 32, alignItems: 'center' }}>
           <Text
-            className="font-bodyBold"
-            style={{ color: '#8A7868', fontSize: 11, letterSpacing: 2, textTransform: 'uppercase' }}
+            className="font-bodyBold text-muted"
+            style={{ fontSize: 11, letterSpacing: 2, textTransform: 'uppercase' }}
           >
             potinho v1.0 ✦ feito com carinho
           </Text>

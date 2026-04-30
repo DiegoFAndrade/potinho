@@ -52,7 +52,7 @@ export default function Onboarding() {
   if (step < SLIDES.length) {
     const slide = SLIDES[step];
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
+      <SafeAreaView className="flex-1 bg-surface">
         <View style={{ flex: 1, paddingHorizontal: 32, paddingTop: 48, paddingBottom: 32 }}>
           {/* Kicker with dashed line */}
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 40 }}>
@@ -88,9 +88,8 @@ export default function Onboarding() {
 
             {/* Title */}
             <Text
-              className="font-display"
+              className="font-display text-ink"
               style={{
-                color: '#231208',
                 fontSize: 32,
                 lineHeight: 42,
                 letterSpacing: -0.8,
@@ -102,9 +101,8 @@ export default function Onboarding() {
 
             {/* Body */}
             <Text
-              className="font-body"
+              className="font-body text-ink-soft"
               style={{
-                color: '#4A2E1E',
                 fontSize: 17,
                 lineHeight: 26,
                 marginTop: 16,
@@ -123,13 +121,13 @@ export default function Onboarding() {
               <View
                 key={i}
                 accessibilityLabel={`Passo ${i + 1} de 3`}
+                className="border-ink"
                 style={{
                   width: i === step ? 24 : 8,
                   height: 8,
                   borderRadius: 4,
                   backgroundColor: i === step ? s.accent : '#E8D5B7',
                   borderWidth: 1.5,
-                  borderColor: '#231208',
                 }}
               />
             ))}
@@ -144,12 +142,11 @@ export default function Onboarding() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
+    <SafeAreaView className="flex-1 bg-surface">
       <View style={{ flex: 1, paddingHorizontal: 32, paddingTop: 48, paddingBottom: 32 }}>
         <Text
-          className="font-bodyBold"
+          className="font-bodyBold text-brand-dark"
           style={{
-            color: '#B8321E',
             fontSize: 12,
             letterSpacing: 3,
             textTransform: 'uppercase',
@@ -159,9 +156,8 @@ export default function Onboarding() {
           ✦ primeira tarefa
         </Text>
         <Text
-          className="font-display"
+          className="font-display text-ink"
           style={{
-            color: '#231208',
             fontSize: 42,
             lineHeight: 46,
             letterSpacing: -1,
@@ -171,9 +167,8 @@ export default function Onboarding() {
           Qual coisa{'\n'}você está{'\n'}adiando?
         </Text>
         <Text
-          className="font-body"
+          className="font-body text-ink-soft"
           style={{
-            color: '#4A2E1E',
             fontSize: 16,
             lineHeight: 24,
             marginBottom: 28,
@@ -183,11 +178,10 @@ export default function Onboarding() {
         </Text>
 
         <View
+          className="bg-surface-hi border-ink"
           style={{
-            backgroundColor: '#FFFBEF',
             borderRadius: 20,
             borderWidth: 3,
-            borderColor: '#231208',
             padding: 18,
           }}
         >

@@ -17,25 +17,24 @@ function TabButton({ label, count, selected, onPress }: { label: string; count: 
       <View style={{ position: 'relative', paddingRight: 3, paddingBottom: 3 }}>
         {selected && (
           <View
+            className="bg-ink"
             style={{
               position: 'absolute',
               top: 3,
               left: 3,
               right: 0,
               bottom: 0,
-              backgroundColor: '#231208',
               borderRadius: 16,
             }}
           />
         )}
         <View
+          className={selected ? 'bg-brand border-ink' : 'bg-surface-hi border-ink'}
           style={{
             paddingVertical: 12,
             paddingHorizontal: 16,
             borderRadius: 16,
             borderWidth: 2.5,
-            borderColor: '#231208',
-            backgroundColor: selected ? '#E8503D' : '#FFFBEF',
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
@@ -43,22 +42,22 @@ function TabButton({ label, count, selected, onPress }: { label: string; count: 
           }}
         >
           <Text
-            className="font-bodyBold"
-            style={{ color: selected ? '#FFFBEF' : '#4A2E1E', fontSize: 14 }}
+            className={selected ? 'font-bodyBold text-surface-hi' : 'font-bodyBold text-ink-soft'}
+            style={{ fontSize: 14 }}
           >
             {label}
           </Text>
           <View
+            className={selected ? 'bg-surface-hi' : 'bg-jar'}
             style={{
-              backgroundColor: selected ? '#FFFBEF' : '#E8D5B7',
               borderRadius: 10,
               paddingHorizontal: 7,
               paddingVertical: 1,
             }}
           >
             <Text
-              className="font-bodyBlack"
-              style={{ color: selected ? '#E8503D' : '#4A2E1E', fontSize: 12 }}
+              className={selected ? 'font-bodyBlack text-brand' : 'font-bodyBlack text-ink-soft'}
+              style={{ fontSize: 12 }}
             >
               {count}
             </Text>
@@ -122,11 +121,10 @@ export default function TasksScreen() {
 
     return (
       <View
+        className="bg-surface-hi border-ink"
         style={{
-          backgroundColor: '#FFFBEF',
           borderRadius: 14,
           borderWidth: 2,
-          borderColor: '#231208',
           paddingVertical: 10,
           paddingHorizontal: 14,
           marginBottom: 8,
@@ -146,7 +144,7 @@ export default function TasksScreen() {
                 flex: 1,
                 fontSize: 15,
                 lineHeight: 20,
-                color: '#231208',
+                color: '#231208', // TextInput color — kept as native prop
                 paddingVertical: 0,
               }}
               onSubmitEditing={handleEditSave}
@@ -166,8 +164,8 @@ export default function TasksScreen() {
         ) : (
           <>
             <Text
-              className="font-bodyMedium"
-              style={{ color: '#231208', flex: 1, fontSize: 15, lineHeight: 20 }}
+              className="font-bodyMedium text-ink"
+              style={{ flex: 1, fontSize: 15, lineHeight: 20 }}
             >
               {item.text}
             </Text>
@@ -187,19 +185,18 @@ export default function TasksScreen() {
 
   const renderDone = ({ item }: { item: Task }) => (
     <View
+      className="bg-blush border-ink"
       style={{
-        backgroundColor: '#FFD5C8',
         borderRadius: 14,
         borderWidth: 2,
-        borderColor: '#231208',
         paddingVertical: 10,
         paddingHorizontal: 14,
         marginBottom: 8,
       }}
     >
       <Text
-        className="font-bodyMedium"
-        style={{ color: '#4A2E1E', fontSize: 15, lineHeight: 20, textDecorationLine: 'line-through' }}
+        className="font-bodyMedium text-ink-soft"
+        style={{ fontSize: 15, lineHeight: 20, textDecorationLine: 'line-through' }}
       >
         {item.text}
       </Text>
@@ -207,7 +204,7 @@ export default function TasksScreen() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
+    <SafeAreaView className="flex-1 bg-surface">
       {/* Header */}
       <View
         style={{
@@ -220,14 +217,14 @@ export default function TasksScreen() {
       >
         <View>
           <Text
-            className="font-bodyBold"
-            style={{ color: '#B8321E', fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
+            className="font-bodyBold text-brand-dark"
+            style={{ fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
           >
             ✦ suas coisas
           </Text>
           <Text
-            className="font-display"
-            style={{ color: '#231208', fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
+            className="font-display text-ink"
+            style={{ fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
           >
             Tarefas
           </Text>
@@ -260,8 +257,8 @@ export default function TasksScreen() {
             renderItem={renderActive}
             ListEmptyComponent={
               <Text
-                className="font-body"
-                style={{ color: '#4A2E1E', fontStyle: 'italic', textAlign: 'center', marginTop: 40 }}
+                className="font-body text-ink-soft"
+                style={{ fontStyle: 'italic', textAlign: 'center', marginTop: 40 }}
               >
                 Nada ainda. Joga algo aí.
               </Text>
@@ -271,9 +268,8 @@ export default function TasksScreen() {
           <>
             {!isPremium && (
               <Text
-                className="font-bodyBold"
+                className="font-bodyBold text-muted"
                 style={{
-                  color: '#8A7868',
                   fontSize: 11,
                   letterSpacing: 1.5,
                   textTransform: 'uppercase',
@@ -290,8 +286,8 @@ export default function TasksScreen() {
               renderItem={renderDone}
               ListEmptyComponent={
                 <Text
-                  className="font-body"
-                  style={{ color: '#4A2E1E', fontStyle: 'italic', textAlign: 'center', marginTop: 40 }}
+                  className="font-body text-ink-soft"
+                  style={{ fontStyle: 'italic', textAlign: 'center', marginTop: 40 }}
                 >
                   Suas tarefas concluídas aparecem aqui.
                 </Text>
@@ -299,35 +295,33 @@ export default function TasksScreen() {
               ListFooterComponent={
                 !isPremium && hiddenCount > 0 ? (
                   <View
+                    className="bg-sage border-ink"
                     style={{
-                      backgroundColor: '#89A47C',
                       borderRadius: 16,
                       borderWidth: 2,
-                      borderColor: '#231208',
                       padding: 16,
                       marginTop: 8,
                       alignItems: 'center',
                     }}
                   >
                     <Text
-                      className="font-bodyMedium"
-                      style={{ color: '#FFFBEF', fontSize: 14, textAlign: 'center', marginBottom: 10 }}
+                      className="font-bodyMedium text-surface-hi"
+                      style={{ fontSize: 14, textAlign: 'center', marginBottom: 10 }}
                     >
                       Você tem mais {hiddenCount} {hiddenCount === 1 ? 'tarefa concluída' : 'tarefas concluídas'}.
                       {'\n'}Premium desbloqueia o histórico completo.
                     </Text>
                     <Pressable
                       onPress={() => router.push('/paywall')}
+                      className="bg-surface-hi border-ink"
                       style={{
-                        backgroundColor: '#FFFBEF',
                         borderRadius: 10,
                         paddingVertical: 8,
                         paddingHorizontal: 18,
                         borderWidth: 2,
-                        borderColor: '#231208',
                       }}
                     >
-                      <Text className="font-bodyBold" style={{ color: '#231208', fontSize: 14 }}>
+                      <Text className="font-bodyBold text-ink" style={{ fontSize: 14 }}>
                         Ver mais →
                       </Text>
                     </Pressable>

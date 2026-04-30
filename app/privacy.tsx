@@ -9,14 +9,14 @@ export default function Privacy() {
   const Section = ({ title, body }: { title: string; body: string }) => (
     <View style={{ marginBottom: 20 }}>
       <Text
-        className="font-bodyBold"
-        style={{ color: '#231208', fontSize: 16, marginBottom: 6 }}
+        className="font-bodyBold text-ink"
+        style={{ fontSize: 16, marginBottom: 6 }}
       >
         {title}
       </Text>
       <Text
-        className="font-body"
-        style={{ color: '#4A2E1E', fontSize: 14, lineHeight: 22 }}
+        className="font-body text-ink-soft"
+        style={{ fontSize: 14, lineHeight: 22 }}
       >
         {body}
       </Text>
@@ -24,7 +24,7 @@ export default function Privacy() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
+    <SafeAreaView className="flex-1 bg-surface">
       <View
         style={{
           paddingHorizontal: 24,
@@ -36,14 +36,14 @@ export default function Privacy() {
       >
         <View>
           <Text
-            className="font-bodyBold"
-            style={{ color: '#B8321E', fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
+            className="font-bodyBold text-brand-dark"
+            style={{ fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
           >
             ✦ legal
           </Text>
           <Text
-            className="font-display"
-            style={{ color: '#231208', fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
+            className="font-display text-ink"
+            style={{ fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
           >
             Privacidade
           </Text>
@@ -53,8 +53,8 @@ export default function Privacy() {
 
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 20, paddingBottom: 40 }}>
         <Text
-          className="font-body"
-          style={{ color: '#8A7868', fontSize: 12, marginBottom: 20 }}
+          className="font-body text-muted"
+          style={{ fontSize: 12, marginBottom: 20 }}
         >
           Última atualização: 11 de abril de 2026
         </Text>
