@@ -22,5 +22,7 @@ module.exports = {
     '^expo-sharing$': '<rootDir>/__mocks__/empty.ts',
     '^expo-document-picker$': '<rootDir>/__mocks__/empty.ts',
     '^@/locales$': '<rootDir>/__mocks__/i18next.ts',
+    '^@react-native-firebase/analytics$': '<rootDir>/__mocks__/@react-native-firebase/analytics.ts',
+    '^@react-native-firebase/app$': '<rootDir>/__mocks__/@react-native-firebase/app.ts',
   },
 };
