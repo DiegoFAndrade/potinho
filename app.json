@@ -15,6 +15,7 @@
     },
     "android": {
       "package": "com.diegofernandes.potinho",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFF8EF"
