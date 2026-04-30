@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { View, Text, Switch, Pressable } from 'react-native';
+import { View, Text, Switch, Pressable, Alert } from 'react-native';
+import { exportData, importData } from '@/services/backupService';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -127,6 +128,25 @@ export default function Settings() {
           label={t('settings.privacy')}
           right={<Text className="text-ink-soft" style={{ fontSize: 20 }}>›</Text>}
           onPress={() => router.push('/privacy')}
+        />
+
+        <Row
+          label={t('settings.export')}
+          right={<Text className="text-ink-soft" style={{ fontSize: 20 }}>↗</Text>}
+          onPress={() => {
+            exportData().catch(() => {});
+          }}
+        />
+
+        <Row
+          label={t('settings.import')}
+          right={<Text className="text-ink-soft" style={{ fontSize: 20 }}>↙</Text>}
+          onPress={async () => {
+            const imported = await importData();
+            if (imported) {
+              Alert.alert(t('backup.importSuccess'));
+            }
+          }}
         />
 
         <View style={{ marginTop: 32, alignItems: 'center' }}>
