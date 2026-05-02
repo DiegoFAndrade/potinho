@@ -1,5 +1,3 @@
-import analytics from '@react-native-firebase/analytics';
-
 export const Events = {
   FIRST_SESSION: 'first_session',
   ONBOARDING_COMPLETED: 'onboarding_completed',
@@ -26,6 +24,10 @@ function track(event: EventName, params?: Record<string, unknown>) {
     return;
   }
 
+  // Lazy-load so dev clients without the Firebase native module can still boot.
+  // The require() here only runs in production builds.
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const analytics = require('@react-native-firebase/analytics').default;
   analytics().logEvent(event, params).catch(() => {});
 }
 
