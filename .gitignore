@@ -36,6 +36,9 @@ yarn-error.*
 # Firebase
 google-services.json
 
+# Play Console submit
+play-console-key.json
+
 # typescript
 *.tsbuildinfo
 

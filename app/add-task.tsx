@@ -77,7 +77,7 @@ export default function AddTask() {
               {t('addTask.title')}
             </Text>
           </View>
-          <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
+          <IconButton icon="x" onPress={() => router.back()} label={t('common.close')} />
         </View>
 
         <View style={{ flex: 1, paddingHorizontal: 24, paddingTop: 28 }}>

@@ -231,7 +231,7 @@ export default function TasksScreen() {
             {t('tasks.title')}
           </Text>
         </View>
-        <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
+        <IconButton icon="x" onPress={() => router.back()} label={t('common.close')} />
       </View>
 
       {/* Tabs */}

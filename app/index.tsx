@@ -134,8 +134,8 @@ export default function Home() {
             {t('home.jarName', { name: jar.name })}
           </Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-            <IconButton icon="list" onPress={() => router.push('/tasks')} label="Lista de tarefas" />
-            <IconButton icon="settings" onPress={() => router.push('/settings')} label="Configurações" />
+            <IconButton icon="list" onPress={() => router.push('/tasks')} label={t('home.tasksLabel')} />
+            <IconButton icon="settings" onPress={() => router.push('/settings')} label={t('home.settingsLabel')} />
           </View>
         </View>
 

@@ -72,7 +72,7 @@ export default function Settings() {
             {t('settings.title')}
           </Text>
         </View>
-        <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
+        <IconButton icon="x" onPress={() => router.back()} label={t('common.close')} />
       </View>
 
       <View style={{ paddingHorizontal: 24, paddingTop: 24 }}>

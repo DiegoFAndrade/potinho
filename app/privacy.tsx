@@ -50,7 +50,7 @@ export default function Privacy() {
             {t('privacy.title')}
           </Text>
         </View>
-        <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
+        <IconButton icon="x" onPress={() => router.back()} label={t('common.close')} />
       </View>
 
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 20, paddingBottom: 40 }}>
@@ -62,6 +62,7 @@ export default function Privacy() {
         </Text>
 
         <Section title={t('privacy.dataTitle')} body={t('privacy.dataBody')} />
+        <Section title={t('privacy.analyticsTitle')} body={t('privacy.analyticsBody')} />
         <Section title={t('privacy.adsTitle')} body={t('privacy.adsBody')} />
         <Section title={t('privacy.crashTitle')} body={t('privacy.crashBody')} />
         <Section title={t('privacy.purchaseTitle')} body={t('privacy.purchaseBody')} />

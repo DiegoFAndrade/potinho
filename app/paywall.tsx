@@ -71,7 +71,7 @@ export default function Paywall() {
   return (
     <SafeAreaView className="flex-1 bg-surface">
       <View style={{ paddingHorizontal: 24, paddingTop: 16, alignItems: 'flex-end' }}>
-        <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
+        <IconButton icon="x" onPress={() => router.back()} label={t('common.close')} />
       </View>
 
       <View style={{ flex: 1, paddingHorizontal: 32, justifyContent: 'center' }}>
@@ -165,7 +165,7 @@ export default function Paywall() {
             {t('paywall.notNow')}
           </Text>
         </Pressable>
-        <Pressable onPress={restore} disabled={restoring} accessibilityRole="button" accessibilityHint="Restaura compra anterior" style={{ paddingVertical: 6, alignItems: 'center' }}>
+        <Pressable onPress={restore} disabled={restoring} accessibilityRole="button" accessibilityHint={t('paywall.restoreHint')} style={{ paddingVertical: 6, alignItems: 'center' }}>
           <Text className="font-body text-muted" style={{ fontSize: 13, textDecorationLine: 'underline' }}>
             {restoring ? t('paywall.restoring') : t('paywall.restore')}
           </Text>
