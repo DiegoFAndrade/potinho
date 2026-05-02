@@ -15,6 +15,7 @@
     },
     "android": {
       "package": "com.diegofernandes.potinho",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFF8EF"
@@ -37,7 +38,9 @@
           "androidAppId": "ca-app-pub-2826077560722110~2767250862"
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-localization",
+      "@react-native-firebase/app"
     ],
     "extra": {
       "router": {},

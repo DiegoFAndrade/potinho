@@ -1,11 +1,14 @@
 import type { ReactNode } from 'react';
-import { View, Text, Switch, Pressable } from 'react-native';
+import { View, Text, Switch, Pressable, Alert } from 'react-native';
+import { exportData, importData } from '@/services/backupService';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { IconButton } from '@/components/IconButton';
 import { useAppStore } from '@/stores/appStore';
 
 export default function Settings() {
+  const { t } = useTranslation();
   const router = useRouter();
   const soundEnabled = useAppStore((s) => s.soundEnabled);
   const hapticsEnabled = useAppStore((s) => s.hapticsEnabled);
@@ -25,20 +28,19 @@ export default function Settings() {
     <Pressable
       onPress={onPress}
       accessibilityRole={onPress ? 'button' : undefined}
+      className="bg-surface-hi border-ink"
       style={{
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 18,
         paddingVertical: 16,
-        backgroundColor: '#FFFBEF',
         borderRadius: 18,
         borderWidth: 2.5,
-        borderColor: '#231208',
         marginBottom: 10,
       }}
     >
-      <Text className="font-bodyBold" style={{ color: '#231208', fontSize: 16 }}>
+      <Text className="font-bodyBold text-ink" style={{ fontSize: 16 }}>
         {label}
       </Text>
       {right}
@@ -46,7 +48,7 @@ export default function Settings() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
+    <SafeAreaView className="flex-1 bg-surface">
       <View
         style={{
           paddingHorizontal: 24,
@@ -58,54 +60,54 @@ export default function Settings() {
       >
         <View>
           <Text
-            className="font-bodyBold"
-            style={{ color: '#B8321E', fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
+            className="font-bodyBold text-brand-dark"
+            style={{ fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
           >
-            ✦ ajustes
+            {t('settings.kicker')}
           </Text>
           <Text
-            className="font-display"
-            style={{ color: '#231208', fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
+            className="font-display text-ink"
+            style={{ fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
           >
-            Configurações
+            {t('settings.title')}
           </Text>
         </View>
-        <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
+        <IconButton icon="x" onPress={() => router.back()} label={t('common.close')} />
       </View>
 
       <View style={{ paddingHorizontal: 24, paddingTop: 24 }}>
         <Row
-          label="Som do sorteio"
+          label={t('settings.sound')}
           right={
             <Switch
               value={soundEnabled}
               onValueChange={toggleSound}
               trackColor={{ true: '#89A47C', false: '#E8D5B7' }}
               thumbColor="#FFFBEF"
-              accessibilityLabel={soundEnabled ? 'Som ativado' : 'Som desativado'}
+              accessibilityLabel={soundEnabled ? t('settings.soundOn') : t('settings.soundOff')}
             />
           }
         />
         <Row
-          label="Vibração"
+          label={t('settings.vibration')}
           right={
             <Switch
               value={hapticsEnabled}
               onValueChange={toggleHaptics}
               trackColor={{ true: '#89A47C', false: '#E8D5B7' }}
               thumbColor="#FFFBEF"
-              accessibilityLabel={hapticsEnabled ? 'Vibração ativada' : 'Vibração desativada'}
+              accessibilityLabel={hapticsEnabled ? t('settings.vibrationOn') : t('settings.vibrationOff')}
             />
           }
         />
 
         {!isPremium && (
           <Row
-            label="✦ Virar premium"
+            label={t('settings.premium')}
             right={
               <Text
-                className="font-bodyBlack"
-                style={{ color: '#E8503D', fontSize: 14, letterSpacing: 1 }}
+                className="font-bodyBlack text-brand"
+                style={{ fontSize: 14, letterSpacing: 1 }}
               >
                 R$ 6,90 →
               </Text>
@@ -116,24 +118,43 @@ export default function Settings() {
 
         {isPremium && (
           <Row
-            label="📊 Estatísticas"
-            right={<Text style={{ color: '#4A2E1E', fontSize: 20 }}>›</Text>}
+            label={t('settings.stats')}
+            right={<Text className="text-ink-soft" style={{ fontSize: 20 }}>›</Text>}
             onPress={() => router.push('/stats')}
           />
         )}
 
         <Row
-          label="Política de privacidade"
-          right={<Text style={{ color: '#4A2E1E', fontSize: 20 }}>›</Text>}
+          label={t('settings.privacy')}
+          right={<Text className="text-ink-soft" style={{ fontSize: 20 }}>›</Text>}
           onPress={() => router.push('/privacy')}
+        />
+
+        <Row
+          label={t('settings.export')}
+          right={<Text className="text-ink-soft" style={{ fontSize: 20 }}>↗</Text>}
+          onPress={() => {
+            exportData().catch(() => {});
+          }}
+        />
+
+        <Row
+          label={t('settings.import')}
+          right={<Text className="text-ink-soft" style={{ fontSize: 20 }}>↙</Text>}
+          onPress={async () => {
+            const imported = await importData();
+            if (imported) {
+              Alert.alert(t('backup.importSuccess'));
+            }
+          }}
         />
 
         <View style={{ marginTop: 32, alignItems: 'center' }}>
           <Text
-            className="font-bodyBold"
-            style={{ color: '#8A7868', fontSize: 11, letterSpacing: 2, textTransform: 'uppercase' }}
+            className="font-bodyBold text-muted"
+            style={{ fontSize: 11, letterSpacing: 2, textTransform: 'uppercase' }}
           >
-            potinho v1.0 ✦ feito com carinho
+            {t('settings.version')}
           </Text>
         </View>
       </View>

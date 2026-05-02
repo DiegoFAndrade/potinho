@@ -1,22 +1,24 @@
 import { View, Text, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { IconButton } from '@/components/IconButton';
 
 export default function Privacy() {
+  const { t } = useTranslation();
   const router = useRouter();
 
   const Section = ({ title, body }: { title: string; body: string }) => (
     <View style={{ marginBottom: 20 }}>
       <Text
-        className="font-bodyBold"
-        style={{ color: '#231208', fontSize: 16, marginBottom: 6 }}
+        className="font-bodyBold text-ink"
+        style={{ fontSize: 16, marginBottom: 6 }}
       >
         {title}
       </Text>
       <Text
-        className="font-body"
-        style={{ color: '#4A2E1E', fontSize: 14, lineHeight: 22 }}
+        className="font-body text-ink-soft"
+        style={{ fontSize: 14, lineHeight: 22 }}
       >
         {body}
       </Text>
@@ -24,7 +26,7 @@ export default function Privacy() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
+    <SafeAreaView className="flex-1 bg-surface">
       <View
         style={{
           paddingHorizontal: 24,
@@ -36,53 +38,35 @@ export default function Privacy() {
       >
         <View>
           <Text
-            className="font-bodyBold"
-            style={{ color: '#B8321E', fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
+            className="font-bodyBold text-brand-dark"
+            style={{ fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
           >
-            ✦ legal
+            {t('privacy.kicker')}
           </Text>
           <Text
-            className="font-display"
-            style={{ color: '#231208', fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
+            className="font-display text-ink"
+            style={{ fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
           >
-            Privacidade
+            {t('privacy.title')}
           </Text>
         </View>
-        <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
+        <IconButton icon="x" onPress={() => router.back()} label={t('common.close')} />
       </View>
 
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 20, paddingBottom: 40 }}>
         <Text
-          className="font-body"
-          style={{ color: '#8A7868', fontSize: 12, marginBottom: 20 }}
+          className="font-body text-muted"
+          style={{ fontSize: 12, marginBottom: 20 }}
         >
-          Última atualização: 11 de abril de 2026
+          {t('privacy.lastUpdated')}
         </Text>
 
-        <Section
-          title="Dados que coletamos"
-          body="O Potinho não coleta dados pessoais. Todas as suas tarefas, potinhos e configurações ficam armazenados exclusivamente no seu dispositivo e nunca são enviados a servidores nossos."
-        />
-
-        <Section
-          title="Anúncios"
-          body="Para usuários da versão gratuita, exibimos anúncios através do Google AdMob. O AdMob pode coletar seu identificador de publicidade (Advertising ID) para fins de personalização e medição. Usuários da versão premium não recebem anúncios e não têm qualquer dado coletado pelo AdMob."
-        />
-
-        <Section
-          title="Relatórios de erro"
-          body="Utilizamos o Sentry para receber relatórios automáticos de falhas do aplicativo. Esses relatórios incluem informações técnicas sobre o dispositivo (modelo, versão do Android) e o erro, mas não contêm dados pessoais."
-        />
-
-        <Section
-          title="Compras"
-          body="Compras são processadas diretamente pelo Google Play. Não temos acesso a dados de pagamento."
-        />
-
-        <Section
-          title="Contato"
-          body="Para dúvidas, envie e-mail para: potinho@gmail.com"
-        />
+        <Section title={t('privacy.dataTitle')} body={t('privacy.dataBody')} />
+        <Section title={t('privacy.analyticsTitle')} body={t('privacy.analyticsBody')} />
+        <Section title={t('privacy.adsTitle')} body={t('privacy.adsBody')} />
+        <Section title={t('privacy.crashTitle')} body={t('privacy.crashBody')} />
+        <Section title={t('privacy.purchaseTitle')} body={t('privacy.purchaseBody')} />
+        <Section title={t('privacy.contactTitle')} body={t('privacy.contactBody')} />
       </ScrollView>
     </SafeAreaView>
   );

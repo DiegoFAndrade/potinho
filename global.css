@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --color-surface: 248 239 217;
+  --color-surface-hi: 255 251 239;
+  --color-ink: 35 18 8;
+  --color-ink-soft: 74 46 30;
+  --color-brand: 232 80 61;
+  --color-brand-dark: 184 50 30;
+  --color-sage: 137 164 124;
+  --color-muted: 138 120 104;
+  --color-accent: 217 165 32;
+  --color-jar: 232 213 183;
+  --color-blush: 255 213 200;
+  --color-night: 26 14 7;
+}
+
+.theme-pastel-blue {
+  --color-brand: 138 180 216;
+  --color-brand-dark: 94 140 179;
+}
+
+.theme-pastel-pink {
+  --color-brand: 232 166 182;
+  --color-brand-dark: 199 122 141;
+}
+
+.theme-pastel-green {
+  --color-brand: 159 201 163;
+  --color-brand-dark: 111 160 117;
+}
+
+.theme-dark {
+  --color-surface: 43 35 28;
+  --color-surface-hi: 59 47 38;
+  --color-ink: 255 248 239;
+  --color-ink-soft: 200 185 170;
+  --color-muted: 168 150 128;
+}

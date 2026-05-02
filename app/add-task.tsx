@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from 'react';
 import { View, Text, TextInput, Image, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, {
   useSharedValue,
@@ -18,6 +19,7 @@ import { useAppStore } from '@/stores/appStore';
 import { analyticsService, Events } from '@/services/analyticsService';
 
 export default function AddTask() {
+  const { t } = useTranslation();
   const router = useRouter();
   const jars = useJarStore((s) => s.jars);
   const isPremium = useAppStore((s) => s.isPremium);
@@ -54,7 +56,7 @@ export default function AddTask() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
+    <SafeAreaView className="flex-1 bg-surface">
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -63,19 +65,19 @@ export default function AddTask() {
         <View style={{ paddingHorizontal: 24, paddingTop: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <View>
             <Text
-              className="font-bodyBold"
-              style={{ color: '#B8321E', fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
+              className="font-bodyBold text-brand-dark"
+              style={{ fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
             >
-              ✦ nova anotação
+              {t('addTask.kicker')}
             </Text>
             <Text
-              className="font-display"
-              style={{ color: '#231208', fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
+              className="font-display text-ink"
+              style={{ fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
             >
-              Joga no potinho
+              {t('addTask.title')}
             </Text>
           </View>
-          <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
+          <IconButton icon="x" onPress={() => router.back()} label={t('common.close')} />
         </View>
 
         <View style={{ flex: 1, paddingHorizontal: 24, paddingTop: 28 }}>
@@ -87,18 +89,17 @@ export default function AddTask() {
                   <Pressable
                     key={j.id}
                     onPress={() => setJarId(j.id)}
+                    className={selected ? 'bg-brand border-ink' : 'bg-blush border-ink'}
                     style={{
                       paddingHorizontal: 14,
                       paddingVertical: 8,
                       borderRadius: 999,
                       borderWidth: 2,
-                      borderColor: '#231208',
-                      backgroundColor: selected ? '#E8503D' : '#FFD5C8',
                     }}
                   >
                     <Text
-                      className="font-bodyBold"
-                      style={{ color: selected ? '#FFFBEF' : '#231208', fontSize: 13 }}
+                      className={selected ? 'font-bodyBold text-surface-hi' : 'font-bodyBold text-ink'}
+                      style={{ fontSize: 13 }}
                     >
                       {j.name}
                     </Text>
@@ -109,11 +110,10 @@ export default function AddTask() {
           )}
 
           <View
+            className="bg-surface-hi border-ink"
             style={{
-              backgroundColor: '#FFFBEF',
               borderRadius: 20,
               borderWidth: 3,
-              borderColor: '#231208',
               padding: 18,
               minHeight: 100,
             }}
@@ -122,9 +122,9 @@ export default function AddTask() {
               ref={inputRef}
               value={text}
               onChangeText={setText}
-              placeholder="O que está te travando?"
+              placeholder={t('addTask.placeholder')}
               placeholderTextColor="#8A7868"
-              accessibilityLabel="Texto da tarefa"
+              accessibilityLabel={t('addTask.inputLabel')}
               style={{
                 fontFamily: 'Fraunces_500Medium',
                 color: '#231208',
@@ -149,15 +149,14 @@ export default function AddTask() {
             ]}
           >
             <View
+              className="bg-sage border-ink"
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                backgroundColor: '#89A47C',
                 paddingVertical: 8,
                 paddingHorizontal: 16,
                 borderRadius: 999,
                 borderWidth: 2,
-                borderColor: '#231208',
                 gap: 6,
               }}
             >
@@ -167,22 +166,22 @@ export default function AddTask() {
                 resizeMode="contain"
               />
               <Text
-                className="font-bodyBold"
-                style={{ color: '#FFFBEF', fontSize: 14 }}
+                className="font-bodyBold text-surface-hi"
+                style={{ fontSize: 14 }}
               >
-                No potinho!
+                {t('addTask.confirmation')}
               </Text>
               <View
+                className="bg-surface-hi"
                 style={{
-                  backgroundColor: '#FFFBEF',
                   borderRadius: 10,
                   paddingHorizontal: 7,
                   paddingVertical: 1,
                 }}
               >
                 <Text
-                  className="font-bodyBlack"
-                  style={{ color: '#89A47C', fontSize: 11 }}
+                  className="font-bodyBlack text-sage"
+                  style={{ fontSize: 11 }}
                 >
                   {activeCount}
                 </Text>
@@ -193,7 +192,7 @@ export default function AddTask() {
 
         <View style={{ paddingHorizontal: 24, paddingBottom: 16 }}>
           <PrimaryButton onPress={submit} disabled={!text.trim()}>
-            Adicionar
+            {t('addTask.submit')}
           </PrimaryButton>
         </View>
       </KeyboardAvoidingView>

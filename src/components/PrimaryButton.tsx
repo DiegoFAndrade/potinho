@@ -25,15 +25,15 @@ export function PrimaryButton({
   testID,
   accessibilityHint,
 }: Props) {
-  const fills = {
-    primary: disabled ? '#F2A292' : '#E8503D',
-    secondary: disabled ? '#FFE8DE' : '#FFD5C8',
-    ghost: 'transparent',
+  const fillClasses = {
+    primary: disabled ? 'bg-brand/50' : 'bg-brand',
+    secondary: disabled ? 'bg-blush/50' : 'bg-blush',
+    ghost: 'bg-transparent',
   };
-  const textColors = {
-    primary: '#FFFBEF',
-    secondary: '#231208',
-    ghost: '#231208',
+  const textClasses = {
+    primary: 'text-surface-hi',
+    secondary: 'text-ink',
+    ghost: 'text-ink',
   };
   const shadowOffset = 5;
 
@@ -42,13 +42,13 @@ export function PrimaryButton({
       {/* offset shadow block */}
       {!disabled && (
         <View
+          className="bg-ink"
           style={{
             position: 'absolute',
             top: shadowOffset,
             left: shadowOffset,
             right: 0,
             bottom: 0,
-            backgroundColor: '#231208',
             borderRadius: 22,
           }}
         />
@@ -63,11 +63,9 @@ export function PrimaryButton({
       >
         {({ pressed }) => (
           <View
+            className={`${fillClasses[variant]} border-3 border-ink`}
             style={{
-              backgroundColor: fills[variant],
               borderRadius: 22,
-              borderWidth: 3,
-              borderColor: '#231208',
               paddingVertical: compact ? 12 : 16,
               paddingHorizontal: compact ? 20 : 24,
               alignItems: 'center',
@@ -79,9 +77,8 @@ export function PrimaryButton({
             }}
           >
             <Text
-              className="font-bodyBlack"
+              className={`font-bodyBlack ${textClasses[variant]}`}
               style={{
-                color: textColors[variant],
                 fontSize: compact ? 16 : 18,
                 letterSpacing: 0.3,
               }}

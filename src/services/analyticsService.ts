@@ -1,3 +1,5 @@
+import analytics from '@react-native-firebase/analytics';
+
 export const Events = {
   FIRST_SESSION: 'first_session',
   ONBOARDING_COMPLETED: 'onboarding_completed',
@@ -24,8 +26,7 @@ function track(event: EventName, params?: Record<string, unknown>) {
     return;
   }
 
-  // TODO: send to Firebase Analytics (or other provider) in production
-  // e.g. analytics().logEvent(event, params);
+  analytics().logEvent(event, params).catch(() => {});
 }
 
 export const analyticsService = { track };

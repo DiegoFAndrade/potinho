@@ -1,10 +1,14 @@
 # Política de Privacidade — Potinho
 
-**Última atualização:** 2026-04-11
+**Última atualização:** 2026-05-02
 
 ## Dados que coletamos
 
-O Potinho não coleta dados pessoais. Todas as suas tarefas, potinhos e configurações ficam armazenados exclusivamente no seu dispositivo e nunca são enviados a servidores nossos.
+O Potinho não coleta dados pessoais identificáveis. Suas tarefas, potinhos e configurações ficam armazenados exclusivamente no seu dispositivo e nunca são enviados a servidores nossos. Coletamos apenas dados anônimos de uso e telemetria conforme detalhado abaixo.
+
+## Análise de uso
+
+Utilizamos o Firebase Analytics (Google) para entender como o app é usado de forma agregada — eventos como abertura do app, sorteios realizados, abertura do paywall e conclusão de compras. Esses eventos não contêm o conteúdo das suas tarefas e não permitem te identificar pessoalmente. O Firebase pode atribuir um identificador anônimo ao seu dispositivo para fins de medição. Para mais informações, consulte a política do Google: https://policies.google.com/privacy
 
 ## Anúncios
 

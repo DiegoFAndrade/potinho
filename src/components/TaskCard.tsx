@@ -1,4 +1,5 @@
 import { View, Text } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { PrimaryButton } from './PrimaryButton';
 
 interface Props {
@@ -10,46 +11,43 @@ interface Props {
 }
 
 export function TaskCard({ text, accepted, onAccept, onDone, onSkip }: Props) {
+  const { t } = useTranslation();
   if (accepted) {
     // "Doing" mode — compact banner with "Concluí!" button
     return (
-      <View accessibilityLabel={`Tarefa em andamento: ${text}`}>
+      <View accessibilityLabel={t('taskCard.doingLabel', { text })}>
         <View
+          className="bg-ink"
           style={{
             position: 'absolute',
             top: 5,
             left: 5,
             right: -5,
             bottom: -5,
-            backgroundColor: '#231208',
             borderRadius: 22,
           }}
         />
         <View
+          className="bg-accent border-3 border-ink"
           style={{
-            backgroundColor: '#D9A520',
             borderRadius: 22,
-            borderWidth: 3,
-            borderColor: '#231208',
             padding: 18,
           }}
         >
           <Text
-            className="font-bodyBold"
+            className="font-bodyBold text-ink"
             style={{
-              color: '#231208',
               fontSize: 11,
               letterSpacing: 2,
               textTransform: 'uppercase',
               marginBottom: 4,
             }}
           >
-            ✦ Fazendo agora
+            {t('taskCard.doingNow')}
           </Text>
           <Text
-            className="font-display"
+            className="font-display text-ink"
             style={{
-              color: '#231208',
               fontSize: 24,
               lineHeight: 28,
               marginBottom: 14,
@@ -59,10 +57,10 @@ export function TaskCard({ text, accepted, onAccept, onDone, onSkip }: Props) {
           </Text>
           <View style={{ gap: 8 }}>
             <PrimaryButton onPress={onDone} compact>
-              Concluir
+              {t('taskCard.finish')}
             </PrimaryButton>
             <PrimaryButton onPress={onSkip} variant="secondary" compact>
-              Desistir
+              {t('taskCard.giveUp')}
             </PrimaryButton>
           </View>
         </View>
@@ -72,59 +70,53 @@ export function TaskCard({ text, accepted, onAccept, onDone, onSkip }: Props) {
 
   // "Just drawn" mode — full card with "Fazer" / "Depois"
   return (
-    <View accessibilityLabel={`Sua tarefa é: ${text}`}>
+    <View accessibilityLabel={t('taskCard.drawnLabel', { text })}>
       <View
+        className="bg-ink"
         style={{
           position: 'absolute',
           top: 6,
           left: 6,
           right: -6,
           bottom: -6,
-          backgroundColor: '#231208',
           borderRadius: 24,
         }}
       />
       <View
+        className="bg-surface-hi border-3 border-ink"
         style={{
-          backgroundColor: '#FFFBEF',
           borderRadius: 24,
-          borderWidth: 3,
-          borderColor: '#231208',
           padding: 22,
         }}
       >
         {/* washi tape corner accent */}
         <View
+          className="bg-accent border-2 border-ink"
           style={{
             position: 'absolute',
             top: -12,
             right: 32,
             width: 56,
             height: 22,
-            backgroundColor: '#D9A520',
-            borderWidth: 2,
-            borderColor: '#231208',
             transform: [{ rotate: '-6deg' }],
           }}
         />
 
         <Text
-          className="font-bodyBold"
+          className="font-bodyBold text-brand-dark"
           style={{
-            color: '#B8321E',
             fontSize: 11,
             letterSpacing: 2,
             textTransform: 'uppercase',
             marginBottom: 6,
           }}
         >
-          ✦ Sua tarefa é
+          {t('taskCard.yourTask')}
         </Text>
 
         <Text
-          className="font-display"
+          className="font-display text-ink"
           style={{
-            color: '#231208',
             fontSize: 28,
             lineHeight: 34,
             marginBottom: 20,
@@ -136,12 +128,12 @@ export function TaskCard({ text, accepted, onAccept, onDone, onSkip }: Props) {
         <View style={{ flexDirection: 'row', gap: 10 }}>
           <View style={{ flex: 1 }}>
             <PrimaryButton onPress={onAccept} testID="task-card-accept">
-              Fazer
+              {t('taskCard.doIt')}
             </PrimaryButton>
           </View>
           <View style={{ flex: 1 }}>
             <PrimaryButton onPress={onSkip} variant="secondary" testID="task-card-skip">
-              Depois
+              {t('taskCard.later')}
             </PrimaryButton>
           </View>
         </View>

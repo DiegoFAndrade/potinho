@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { View, Text, Image } from 'react-native';
 import { Redirect, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, {
   useSharedValue,
@@ -63,33 +64,32 @@ function CelebrationToast({ message }: { message: string }) {
     >
       <View style={{ position: 'relative', paddingRight: 5, paddingBottom: 5 }}>
         <View
+          className="bg-ink"
           style={{
             position: 'absolute',
             top: 5,
             left: 5,
             right: 0,
             bottom: 0,
-            backgroundColor: '#231208',
             borderRadius: 24,
           }}
         />
         <View
+          className="bg-sage border-ink"
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            backgroundColor: '#89A47C',
             paddingVertical: 14,
             paddingHorizontal: 24,
             borderRadius: 24,
             borderWidth: 3,
-            borderColor: '#231208',
             gap: 10,
           }}
         >
           <Image source={POT_IMAGE} style={{ width: 28, height: 28 }} resizeMode="contain" />
           <Text
-            className="font-bodyBlack"
-            style={{ color: '#FFFBEF', fontSize: 18 }}
+            className="font-bodyBlack text-surface-hi"
+            style={{ fontSize: 18 }}
           >
             {message}
           </Text>
@@ -100,6 +100,7 @@ function CelebrationToast({ message }: { message: string }) {
 }
 
 export default function Home() {
+  const { t } = useTranslation();
   const router = useRouter();
   const onboardingDone = useAppStore((s) => s.onboardingDone);
   const jars = useJarStore((s) => s.jars);
@@ -115,7 +116,7 @@ export default function Home() {
   if (!jar) return null;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
+    <SafeAreaView className="flex-1 bg-surface">
       {/* Celebration toast */}
       {celebration && <CelebrationToast message={celebration} key={celebration} />}
 
@@ -123,56 +124,53 @@ export default function Home() {
       <View style={{ paddingHorizontal: 24, paddingTop: 8, paddingBottom: 16 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <Text
-            className="font-bodyBold"
+            className="font-bodyBold text-brand-dark"
             style={{
-              color: '#B8321E',
               fontSize: 10,
               letterSpacing: 2.5,
               textTransform: 'uppercase',
             }}
           >
-            ✦ {jar.name}
+            {t('home.jarName', { name: jar.name })}
           </Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-            <IconButton icon="list" onPress={() => router.push('/tasks')} label="Lista de tarefas" />
-            <IconButton icon="settings" onPress={() => router.push('/settings')} label="Configurações" />
+            <IconButton icon="list" onPress={() => router.push('/tasks')} label={t('home.tasksLabel')} />
+            <IconButton icon="settings" onPress={() => router.push('/settings')} label={t('home.settingsLabel')} />
           </View>
         </View>
 
         <Text
-          className="font-display"
+          className="font-display text-ink"
           style={{
-            color: '#231208',
             fontSize: 44,
             lineHeight: 48,
             letterSpacing: -1,
             marginTop: 2,
           }}
         >
-          Potinho
+          {t('home.title')}
         </Text>
       </View>
 
       {/* Main area */}
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 }}>
-        <View accessibilityLabel={`Potinho com ${activeCount} tarefas`}>
+        <View>
           <Jar ref={jarRef} taskCount={activeCount} />
         </View>
 
         {!drawnTask && (
           <View style={{ alignItems: 'center', marginTop: 12 }}>
             <Text
-              className="font-bodyBold"
+              className="font-bodyBold text-ink-soft"
               style={{
-                color: '#4A2E1E',
                 fontSize: 13,
                 letterSpacing: 1.5,
                 textTransform: 'uppercase',
               }}
             >
               {activeCount === 0
-                ? '— Vazio, adicione algo —'
-                : `— ${activeCount} ${activeCount === 1 ? 'coisa' : 'coisas'} pra fazer —`}
+                ? t('home.empty')
+                : t('home.taskCount', { count: activeCount })}
             </Text>
           </View>
         )}
@@ -194,14 +192,14 @@ export default function Home() {
       {!drawnTask && (
         <View style={{ paddingHorizontal: 24, paddingBottom: 16, gap: 12 }}>
           <PrimaryButton onPress={() => router.push('/add-task')} variant="secondary">
-            + Criar tarefa
+            {t('home.addTask')}
           </PrimaryButton>
           <PrimaryButton
             onPress={draw}
             disabled={activeCount === 0 || isDrawing}
             testID="draw-button"
           >
-            {isDrawing ? '...' : 'SORTEAR ✦'}
+            {isDrawing ? t('home.drawing') : t('home.draw')}
           </PrimaryButton>
         </View>
       )}

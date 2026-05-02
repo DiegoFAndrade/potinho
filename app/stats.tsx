@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { IconButton } from '@/components/IconButton';
 import { computeStats } from '@/lib/stats';
@@ -8,6 +9,7 @@ import { useAppStore } from '@/stores/appStore';
 import { useJarStore } from '@/stores/jarStore';
 
 export default function Stats() {
+  const { t } = useTranslation();
   const router = useRouter();
   const tasks = useTaskStore((s) => s.tasks);
   const jars = useJarStore((s) => s.jars);
@@ -17,29 +19,27 @@ export default function Stats() {
   const Stat = ({ label, value, tint }: { label: string; value: string | number; tint: string }) => (
     <View style={{ flex: 1, marginHorizontal: 5 }} accessibilityLabel={`${label}: ${value}`}>
       <View
+        className="bg-ink"
         style={{
           position: 'absolute',
           top: 4,
           left: 4,
           right: -4,
           bottom: -4,
-          backgroundColor: '#231208',
           borderRadius: 20,
         }}
       />
       <View
+        className={`${tint} border-ink`}
         style={{
-          backgroundColor: tint,
           borderRadius: 20,
           borderWidth: 2.5,
-          borderColor: '#231208',
           padding: 16,
         }}
       >
         <Text
-          className="font-bodyBold"
+          className="font-bodyBold text-ink-soft"
           style={{
-            color: '#4A2E1E',
             fontSize: 10,
             letterSpacing: 1.5,
             textTransform: 'uppercase',
@@ -48,8 +48,8 @@ export default function Stats() {
           {label}
         </Text>
         <Text
-          className="font-display"
-          style={{ color: '#231208', fontSize: 36, lineHeight: 40, marginTop: 2 }}
+          className="font-display text-ink"
+          style={{ fontSize: 36, lineHeight: 40, marginTop: 2 }}
         >
           {value}
         </Text>
@@ -58,7 +58,7 @@ export default function Stats() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8EFD9' }}>
+    <SafeAreaView className="flex-1 bg-surface">
       <View
         style={{
           paddingHorizontal: 24,
@@ -70,35 +70,34 @@ export default function Stats() {
       >
         <View>
           <Text
-            className="font-bodyBold"
-            style={{ color: '#B8321E', fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
+            className="font-bodyBold text-brand-dark"
+            style={{ fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase' }}
           >
-            ✦ seu progresso
+            {t('stats.kicker')}
           </Text>
           <Text
-            className="font-display"
-            style={{ color: '#231208', fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
+            className="font-display text-ink"
+            style={{ fontSize: 32, lineHeight: 36, letterSpacing: -0.8, marginTop: 2 }}
           >
-            Stats
+            {t('stats.title')}
           </Text>
         </View>
-        <IconButton icon="x" onPress={() => router.back()} label="Fechar" />
+        <IconButton icon="x" onPress={() => router.back()} label={t('common.close')} />
       </View>
 
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 20 }}>
         <View style={{ flexDirection: 'row', marginBottom: 16 }}>
-          <Stat label="feitas" value={stats.totalDone} tint="#FFD5C8" />
-          <Stat label="ativas" value={stats.totalActive} tint="#FFFBEF" />
+          <Stat label={t('stats.done')} value={stats.totalDone} tint="bg-blush" />
+          <Stat label={t('stats.active')} value={stats.totalActive} tint="bg-surface-hi" />
         </View>
         <View style={{ flexDirection: 'row', marginBottom: 24 }}>
-          <Stat label="streak" value={`${streak.count}🔥`} tint="#D9A520" />
-          <Stat label="taxa" value={`${Math.round(stats.completionRate * 100)}%`} tint="#89A47C" />
+          <Stat label={t('stats.streak')} value={`${streak.count}🔥`} tint="bg-accent" />
+          <Stat label={t('stats.rate')} value={`${Math.round(stats.completionRate * 100)}%`} tint="bg-sage" />
         </View>
 
         <Text
-          className="font-bodyBold"
+          className="font-bodyBold text-ink-soft"
           style={{
-            color: '#4A2E1E',
             fontSize: 12,
             letterSpacing: 2,
             textTransform: 'uppercase',
@@ -107,16 +106,15 @@ export default function Stats() {
             paddingHorizontal: 4,
           }}
         >
-          — por potinho
+          {t('stats.byJar')}
         </Text>
         {jars.map((j) => (
           <View
             key={j.id}
+            className="bg-surface-hi border-ink"
             style={{
-              backgroundColor: '#FFFBEF',
               borderRadius: 18,
               borderWidth: 2.5,
-              borderColor: '#231208',
               padding: 16,
               marginBottom: 10,
               flexDirection: 'row',
@@ -124,10 +122,10 @@ export default function Stats() {
               alignItems: 'center',
             }}
           >
-            <Text className="font-bodyBold" style={{ color: '#231208', fontSize: 16 }}>
+            <Text className="font-bodyBold text-ink" style={{ fontSize: 16 }}>
               {j.name}
             </Text>
-            <Text className="font-display" style={{ color: '#E8503D', fontSize: 24 }}>
+            <Text className="font-display text-brand" style={{ fontSize: 24 }}>
               {stats.doneByJar[j.id] ?? 0}
             </Text>
           </View>
