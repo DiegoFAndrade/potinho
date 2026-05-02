@@ -12,7 +12,6 @@ export default function Settings() {
   const router = useRouter();
   const soundEnabled = useAppStore((s) => s.soundEnabled);
   const hapticsEnabled = useAppStore((s) => s.hapticsEnabled);
-  const isPremium = useAppStore((s) => s.isPremium);
   const toggleSound = useAppStore((s) => s.toggleSound);
   const toggleHaptics = useAppStore((s) => s.toggleHaptics);
 
@@ -101,28 +100,11 @@ export default function Settings() {
           }
         />
 
-        {!isPremium && (
-          <Row
-            label={t('settings.premium')}
-            right={
-              <Text
-                className="font-bodyBlack text-brand"
-                style={{ fontSize: 14, letterSpacing: 1 }}
-              >
-                R$ 6,90 →
-              </Text>
-            }
-            onPress={() => router.push('/paywall')}
-          />
-        )}
-
-        {isPremium && (
-          <Row
-            label={t('settings.stats')}
-            right={<Text className="text-ink-soft" style={{ fontSize: 20 }}>›</Text>}
-            onPress={() => router.push('/stats')}
-          />
-        )}
+        <Row
+          label={t('settings.stats')}
+          right={<Text className="text-ink-soft" style={{ fontSize: 20 }}>›</Text>}
+          onPress={() => router.push('/stats')}
+        />
 
         <Row
           label={t('settings.privacy')}

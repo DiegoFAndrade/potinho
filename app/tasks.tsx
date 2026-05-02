@@ -7,7 +7,6 @@ import { Feather } from '@expo/vector-icons';
 import { IconButton } from '@/components/IconButton';
 import { useJarStore } from '@/stores/jarStore';
 import { useTaskStore } from '@/stores/taskStore';
-import { useAppStore } from '@/stores/appStore';
 import type { Task } from '@/types';
 
 type Tab = 'active' | 'done';
@@ -75,7 +74,6 @@ export default function TasksScreen() {
   const jars = useJarStore((s) => s.jars);
   const tasks = useTaskStore((s) => s.tasks);
   const removeTask = useTaskStore((s) => s.removeTask);
-  const isPremium = useAppStore((s) => s.isPremium);
   const [tab, setTab] = useState<Tab>('active');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editText, setEditText] = useState('');
@@ -84,14 +82,9 @@ export default function TasksScreen() {
   if (!jar) return null;
 
   const active = tasks.filter((t) => t.jarId === jar.id && t.status === 'active');
-  const sevenDaysAgo = Date.now() - 7 * 86_400_000;
-  const allCompleted = tasks.filter(
-    (t) => t.jarId === jar.id && t.status === 'done' && t.completedAt != null,
-  );
-  const completed = allCompleted
-    .filter((t) => isPremium || (t.completedAt ?? 0) >= sevenDaysAgo)
+  const completed = tasks
+    .filter((t) => t.jarId === jar.id && t.status === 'done' && t.completedAt != null)
     .sort((a, b) => (b.completedAt ?? 0) - (a.completedAt ?? 0));
-  const hiddenCount = allCompleted.length - completed.length;
 
   const handleDelete = (id: string) => {
     Alert.alert(t('tasks.deleteTitle'), undefined, [
@@ -267,71 +260,19 @@ export default function TasksScreen() {
             }
           />
         ) : (
-          <>
-            {!isPremium && (
+          <FlatList
+            data={completed}
+            keyExtractor={(t) => t.id}
+            renderItem={renderDone}
+            ListEmptyComponent={
               <Text
-                className="font-bodyBold text-muted"
-                style={{
-                  fontSize: 11,
-                  letterSpacing: 1.5,
-                  textTransform: 'uppercase',
-                  marginBottom: 10,
-                  textAlign: 'center',
-                }}
+                className="font-body text-ink-soft"
+                style={{ fontStyle: 'italic', textAlign: 'center', marginTop: 40 }}
               >
-                {t('tasks.last7days')}
+                {t('tasks.emptyDone')}
               </Text>
-            )}
-            <FlatList
-              data={completed}
-              keyExtractor={(t) => t.id}
-              renderItem={renderDone}
-              ListEmptyComponent={
-                <Text
-                  className="font-body text-ink-soft"
-                  style={{ fontStyle: 'italic', textAlign: 'center', marginTop: 40 }}
-                >
-                  {t('tasks.emptyDone')}
-                </Text>
-              }
-              ListFooterComponent={
-                !isPremium && hiddenCount > 0 ? (
-                  <View
-                    className="bg-sage border-ink"
-                    style={{
-                      borderRadius: 16,
-                      borderWidth: 2,
-                      padding: 16,
-                      marginTop: 8,
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text
-                      className="font-bodyMedium text-surface-hi"
-                      style={{ fontSize: 14, textAlign: 'center', marginBottom: 10 }}
-                    >
-                      {t('tasks.hiddenCount', { count: hiddenCount })}
-                      {'\n'}{t('tasks.hiddenUpsell')}
-                    </Text>
-                    <Pressable
-                      onPress={() => router.push('/paywall')}
-                      className="bg-surface-hi border-ink"
-                      style={{
-                        borderRadius: 10,
-                        paddingVertical: 8,
-                        paddingHorizontal: 18,
-                        borderWidth: 2,
-                      }}
-                    >
-                      <Text className="font-bodyBold text-ink" style={{ fontSize: 14 }}>
-                        {t('tasks.seeMore')}
-                      </Text>
-                    </Pressable>
-                  </View>
-                ) : null
-              }
-            />
-          </>
+            }
+          />
         )}
       </View>
     </SafeAreaView>

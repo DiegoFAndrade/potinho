@@ -15,14 +15,12 @@ import { PrimaryButton } from '@/components/PrimaryButton';
 import { IconButton } from '@/components/IconButton';
 import { useJarStore } from '@/stores/jarStore';
 import { useTaskStore } from '@/stores/taskStore';
-import { useAppStore } from '@/stores/appStore';
 import { analyticsService, Events } from '@/services/analyticsService';
 
 export default function AddTask() {
   const { t } = useTranslation();
   const router = useRouter();
   const jars = useJarStore((s) => s.jars);
-  const isPremium = useAppStore((s) => s.isPremium);
   const [text, setText] = useState('');
   const [jarId, setJarId] = useState(jars[0]?.id ?? '');
   const activeCount = useTaskStore((s) => (jarId ? s.activeIn(jarId).length : 0));
@@ -81,7 +79,7 @@ export default function AddTask() {
         </View>
 
         <View style={{ flex: 1, paddingHorizontal: 24, paddingTop: 28 }}>
-          {isPremium && jars.length > 1 && (
+          {jars.length > 1 && (
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
               {jars.map((j) => {
                 const selected = jarId === j.id;

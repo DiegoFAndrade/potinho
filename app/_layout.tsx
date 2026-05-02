@@ -16,7 +16,6 @@ import {
 } from '@expo-google-fonts/fraunces';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { adsService } from '@/services/adsService';
-import { purchaseService } from '@/services/purchaseService';
 import { analyticsService, Events } from '@/services/analyticsService';
 import { useJarStore } from '@/stores/jarStore';
 import { useAppStore } from '@/stores/appStore';
@@ -43,10 +42,6 @@ function RootLayout() {
     }
     useJarStore.getState().ensureDefault();
     adsService.init().catch(() => {});
-    purchaseService.init().catch(() => {});
-    return () => {
-      purchaseService.cleanup().catch(() => {});
-    };
   }, []);
 
   if (!fontsLoaded) {
@@ -70,7 +65,6 @@ function RootLayout() {
           <Stack.Screen name="add-task" options={{ presentation: 'modal' }} />
           <Stack.Screen name="tasks" />
           <Stack.Screen name="settings" />
-          <Stack.Screen name="paywall" options={{ presentation: 'modal' }} />
           <Stack.Screen name="stats" />
           <Stack.Screen name="privacy" />
         </Stack>

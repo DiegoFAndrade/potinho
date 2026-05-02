@@ -4,9 +4,7 @@ import { useTaskStore } from '@/stores/taskStore';
 import { useAppStore } from '@/stores/appStore';
 import { hapticsService } from '@/services/hapticsService';
 import { soundService } from '@/services/soundService';
-import { adsService } from '@/services/adsService';
 import { analyticsService, Events } from '@/services/analyticsService';
-import { toDateKey } from '@/lib/streak';
 import type { Task } from '@/types';
 import i18n from '@/locales';
 
@@ -58,17 +56,11 @@ export const useDrawTask = (jarId: string) => {
 
     soundService.fadeOut(1500);
 
-    const prevStreakDate = useAppStore.getState().streak.lastDrawDate;
-    const today = toDateKey(new Date());
-    const isFirstDrawToday = prevStreakDate !== today;
-
     useAppStore.getState().registerDraw(picked.id);
     hapticsService.success();
     setDrawnTask(picked);
     setIsAccepted(false);
     setIsDrawing(false);
-
-    adsService.maybeShowInterstitial(isFirstDrawToday);
   };
 
   const accept = () => {
