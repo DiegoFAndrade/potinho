@@ -1,6 +1,3 @@
-import * as FileSystem from 'expo-file-system/legacy';
-import * as Sharing from 'expo-sharing';
-import * as DocumentPicker from 'expo-document-picker';
 import { Alert } from 'react-native';
 import i18n from '@/locales';
 import { useAppStore } from '@/stores/appStore';
@@ -49,6 +46,13 @@ export function validateBackup(data: unknown): data is BackupData {
 }
 
 export async function exportData(): Promise<void> {
+  // Lazy-load native-backed modules so the screen importing this file can still
+  // render in dev clients that don't have these modules linked.
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const FileSystem = require('expo-file-system/legacy');
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const Sharing = require('expo-sharing');
+
   const data = buildExportData();
   const json = JSON.stringify(data, null, 2);
   const path = `${FileSystem.cacheDirectory}potinho-backup.json`;
@@ -58,6 +62,11 @@ export async function exportData(): Promise<void> {
 }
 
 export async function importData(): Promise<boolean> {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const FileSystem = require('expo-file-system/legacy');
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const DocumentPicker = require('expo-document-picker');
+
   const result = await DocumentPicker.getDocumentAsync({ type: 'application/json' });
 
   if (result.canceled || !result.assets?.[0]) return false;
