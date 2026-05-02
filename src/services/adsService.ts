@@ -37,7 +37,7 @@ const loadInterstitial = () => {
 export const adsService = {
   init: async () => {
     await mobileAds().initialize();
-    loadInterstitial();
+    // Interstitials disabled in v1 — keep the function around for v2 reactivation.
   },
   maybeShowInterstitial: (isFirstDrawToday: boolean) => {
     const state = useAppStore.getState();
