@@ -18,7 +18,7 @@ interface Props {
   taskCount: number;
 }
 
-const POT_IMAGE = require('../../assets/logo-potinho-transparent.png');
+const POT_IMAGE = require('../../assets/logo-transparent.png');
 
 /** Small paper slips peeking out of the pot. */
 function PaperSlips({ count }: { count: number }) {

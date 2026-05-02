@@ -161,7 +161,7 @@ export default function AddTask() {
               }}
             >
               <Image
-                source={require('../assets/logo-potinho-transparent.png')}
+                source={require('../assets/logo-transparent.png')}
                 style={{ width: 20, height: 20 }}
                 resizeMode="contain"
               />

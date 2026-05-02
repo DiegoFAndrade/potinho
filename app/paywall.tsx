@@ -77,7 +77,7 @@ export default function Paywall() {
       <View style={{ flex: 1, paddingHorizontal: 32, justifyContent: 'center' }}>
         <View style={{ alignItems: 'center' }}>
           <Image
-            source={require('../assets/logo-potinho-transparent.png')}
+            source={require('../assets/logo-transparent.png')}
             style={{ width: 80, height: 80, marginBottom: 16 }}
             resizeMode="contain"
           />
