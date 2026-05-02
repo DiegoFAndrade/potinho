@@ -21,7 +21,7 @@ import { useJarStore } from '@/stores/jarStore';
 import { useTaskStore } from '@/stores/taskStore';
 import { useAppStore } from '@/stores/appStore';
 
-const POT_IMAGE = require('../assets/logo-potinho-transparent.png');
+const POT_IMAGE = require('../assets/logo-transparent.png');
 
 function CelebrationToast({ message }: { message: string }) {
   const opacity = useSharedValue(0);
